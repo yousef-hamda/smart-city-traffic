@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Smart City Traffic",
+    "slug": "smart-city-traffic",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "smartcitytraffic",
+    "userInterfaceStyle": "automatic",
+    "platforms": ["ios", "android"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "city.smart.traffic"
+    },
+    "android": {
+      "package": "city.smart.traffic"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

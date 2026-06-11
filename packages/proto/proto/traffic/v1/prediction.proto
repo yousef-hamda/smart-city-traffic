@@ -1,0 +1,68 @@
+// Model-serving contract for the ML prediction service (Python, port 9093).
+// Mirrors the REST surface; gRPC is the path internal callers (RL optimizer,
+// API gateway) use for latency-sensitive lookups.
+syntax = "proto3";
+
+package traffic.v1;
+
+option java_multiple_files = true;
+option java_package = "city.smart.proto.traffic.v1";
+
+import "google/protobuf/timestamp.proto";
+
+service PredictionService {
+  rpc Predict(PredictRequest) returns (PredictResponse);
+  rpc DetectAnomaly(AnomalyRequest) returns (AnomalyResponse);
+  rpc ForecastDemand(DemandRequest) returns (DemandResponse);
+}
+
+message PredictRequest {
+  string segment_id = 1;
+  // Supported horizons: 15, 30, 60.
+  uint32 horizon_minutes = 2;
+}
+
+message ShapContribution {
+  string feature = 1;
+  double value = 2;
+}
+
+message PredictResponse {
+  string segment_id = 1;
+  uint32 horizon_minutes = 2;
+  double predicted_speed_kmh = 3;
+  double lower_ci = 4;
+  double upper_ci = 5;
+  // Top-5 SHAP feature contributions, largest absolute impact first.
+  repeated ShapContribution shap_top5 = 6;
+  string model_version = 7;
+  google.protobuf.Timestamp generated_at = 8;
+}
+
+message AnomalyRequest {
+  string segment_id = 1;
+}
+
+message AnomalyResponse {
+  string segment_id = 1;
+  bool is_anomaly = 2;
+  // Isolation Forest score; lower = more anomalous.
+  double score = 3;
+  string model_version = 4;
+}
+
+message DemandRequest {
+  string segment_id = 1;
+  uint32 horizon_hours = 2;
+}
+
+message DemandResponse {
+  string segment_id = 1;
+  repeated HourlyDemand hourly = 2;
+  string model_version = 3;
+}
+
+message HourlyDemand {
+  google.protobuf.Timestamp hour = 1;
+  uint32 predicted_vehicle_count = 2;
+}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { isRtl, locales } from "../../i18n";
 import "../globals.css";
 
@@ -21,13 +21,14 @@ type LocaleLayoutProps = {
   params: { locale: string };
 };
 
-export default async function LocaleLayout({
-  children,
-  params: { locale },
-}: LocaleLayoutProps) {
+export default async function LocaleLayout({ children, params: { locale } }: LocaleLayoutProps) {
   if (!(locales as readonly string[]).includes(locale)) {
     notFound();
   }
+
+  // Opt the statically-generated locale routes back into static rendering;
+  // next-intl APIs otherwise force dynamic rendering when reading headers.
+  setRequestLocale(locale);
 
   const messages = await getMessages();
 

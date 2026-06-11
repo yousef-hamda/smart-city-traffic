@@ -1,0 +1,14 @@
+{
+  "common": {
+    "appName": "פלטפורמת תנועה חכמה",
+    "loading": "טוען…",
+    "error": "משהו השתבש",
+    "retry": "נסה שוב",
+    "language": "שפה",
+    "languages": {
+      "en": "English",
+      "he": "עברית",
+      "ar": "العربية"
+    }
+  }
+}

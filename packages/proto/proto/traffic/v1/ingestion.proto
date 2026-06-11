@@ -1,0 +1,37 @@
+// High-throughput internal ingestion contract.
+// Served by sensor-ingestion (Java, port 9091); used by trusted internal
+// producers that bypass the public REST surface.
+syntax = "proto3";
+
+package traffic.v1;
+
+option java_multiple_files = true;
+option java_package = "city.smart.proto.traffic.v1";
+
+import "google/protobuf/timestamp.proto";
+
+service IngestionService {
+  // Publish a single reading; ack carries the assigned road segment.
+  rpc PublishReading(SensorReading) returns (PublishAck);
+  // Client-streamed bulk path for simulator replay and backfill jobs.
+  rpc PublishReadings(stream SensorReading) returns (PublishAck);
+}
+
+message SensorReading {
+  string sensor_id = 1;
+  google.protobuf.Timestamp ts = 2;
+  double lat = 3;
+  double lon = 4;
+  uint32 vehicle_count = 5;
+  double avg_speed_kmh = 6;
+  // Percentage of the observation window the sensor loop was occupied, 0-100.
+  double occupancy_pct = 7;
+}
+
+message PublishAck {
+  uint64 accepted = 1;
+  uint64 rejected = 2;
+  // Segment resolved via PostGIS lookup for the last accepted reading;
+  // empty when rejected or not yet enriched.
+  string road_segment_id = 3;
+}

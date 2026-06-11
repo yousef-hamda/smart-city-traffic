@@ -1,0 +1,10 @@
+{
+  "name": "@smart-city/proto",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Protobuf contracts shared across Java, Python, and TypeScript services",
+  "license": "MIT",
+  "scripts": {
+    "generate": "echo 'Per-language stubs are generated where they are consumed:' && echo '  Java   → protobuf-maven-plugin in apps/sensor-ingestion (Phase 2)' && echo '  Python → grpcio-tools in apps/ml-prediction (Phase 5)' && echo '  TS     → @bufbuild/buf in apps/api-gateway (Phase 9)'"
+  }
+}
