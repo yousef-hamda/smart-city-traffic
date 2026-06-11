@@ -1,0 +1,72 @@
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Node ---
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+.turbo/
+.expo/
+.expo-shared/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# --- Java ---
+target/
+*.class
+.gradle/
+
+# --- ML artifacts (regenerate via notebooks / make models) ---
+ml/models/*
+!ml/models/.gitkeep
+mlruns/
+*.ckpt
+*.onnx
+*.pt
+!**/fixtures/**/*.pt
+
+# --- Data lake / local volumes ---
+.data/
+*.db
+chroma/
+
+# --- Secrets & env ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!**/test/**/*.key
+
+# --- IDE ---
+.idea/
+.vscode/
+*.iml
+
+# --- Terraform ---
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+!*.tfvars.example
+
+# --- Logs ---
+*.log
+logs/

@@ -1,0 +1,66 @@
+# Hot-reload overlay for local development.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile apps up
+#
+# Mounts source into containers and switches commands to watch mode.
+
+services:
+  vision-service:
+    volumes:
+      - ./apps/vision-service/src:/app/src
+    command:
+      ["uvicorn", "vision_service.main:app", "--host", "0.0.0.0", "--port", "8082", "--reload"]
+
+  ml-prediction:
+    volumes:
+      - ./apps/ml-prediction/src:/app/src
+    command:
+      ["uvicorn", "ml_prediction.main:app", "--host", "0.0.0.0", "--port", "8083", "--reload"]
+
+  rl-optimizer:
+    volumes:
+      - ./apps/rl-optimizer/src:/app/src
+    command:
+      ["uvicorn", "rl_optimizer.main:app", "--host", "0.0.0.0", "--port", "8084", "--reload"]
+
+  federated-coordinator:
+    volumes:
+      - ./apps/federated-coordinator/src:/app/src
+    command:
+      ["uvicorn", "federated_coordinator.main:app", "--host", "0.0.0.0", "--port", "8085", "--reload"]
+
+  ai-assistant:
+    volumes:
+      - ./apps/ai-assistant/src:/app/src
+    command:
+      ["uvicorn", "ai_assistant.main:app", "--host", "0.0.0.0", "--port", "8086", "--reload"]
+
+  voice-gateway:
+    volumes:
+      - ./apps/voice-gateway/src:/app/src
+    command:
+      ["uvicorn", "voice_gateway.main:app", "--host", "0.0.0.0", "--port", "8087", "--reload"]
+
+  api-gateway:
+    volumes:
+      - ./apps/api-gateway/src:/app/src
+    command: ["node", "--watch", "dist/main.js"]
+
+  realtime-gateway:
+    volumes:
+      - ./apps/realtime-gateway/src:/app/src
+    command: ["npm", "run", "dev"]
+
+  frontend:
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: ["npm", "run", "dev"]
+
+  developer-portal:
+    volumes:
+      - ./apps/developer-portal:/app
+      - /app/node_modules
+      - /app/.next
+    command: ["npm", "run", "dev"]

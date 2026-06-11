@@ -1,0 +1,31 @@
+{
+  "name": "smart-city-traffic",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Smart City Traffic Optimization Platform — real-time ingestion, ML/RL/CV, 3D digital twin, AI assistant",
+  "author": "Yousef Hasan Hamda <yousef123hamda@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "lint": "pnpm -r --if-present lint",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "build": "pnpm -r --if-present build",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yaml,yml}\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,md,yaml,yml}": "prettier --write"
+  }
+}

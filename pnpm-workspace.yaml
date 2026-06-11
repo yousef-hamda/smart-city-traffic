@@ -1,0 +1,7 @@
+packages:
+  - "apps/frontend"
+  - "apps/mobile"
+  - "apps/developer-portal"
+  - "apps/api-gateway"
+  - "apps/realtime-gateway"
+  - "packages/*"
