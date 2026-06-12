@@ -60,6 +60,19 @@ jobs:
       - run: mypy src
       - run: pytest -q
 
+  graph:
+    name: Knowledge graph (derivation + algorithms)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e "apps/sensor-simulator" pytest ruff
+      - run: ruff check scripts/seed
+      - run: PYTHONPATH=apps/sensor-simulator/src:scripts/seed python -m pytest scripts/seed/tests -q
+
   java:
     name: sensor-ingestion (mvn verify)
     runs-on: ubuntu-latest
