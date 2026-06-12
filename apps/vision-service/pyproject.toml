@@ -5,13 +5,16 @@ build-backend = "hatchling.build"
 [project]
 name = "smart-city-vision-service"
 version = "0.1.0"
-description = "Consumes camera frames from Kafka and runs YOLOv8 detection + ByteTrack tracking. Implementation lands in Phase 3."
+description = "Consumes camera frames from Kafka, runs detection (YOLOv8 / classical) + ByteTrack tracking, detects incidents, and publishes vision.events."
 authors = [{ name = "Yousef Hasan Hamda", email = "yousef123hamda@gmail.com" }]
 license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.111",
     "uvicorn[standard]>=0.30",
+    "kafka-python-ng>=2.2",
+    "numpy>=1.26",
+    "opencv-python-headless>=4.9",
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
     "structlog>=24.1",
@@ -22,6 +25,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# YOLOv8 inference for real footage; heavy (pulls torch). The synthetic
+# detector path needs none of this, so it is opt-in.
+yolo = ["ultralytics>=8.2"]
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
@@ -51,4 +57,4 @@ plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-pythonpath = ["src"]
+pythonpath = ["src", "tests"]
