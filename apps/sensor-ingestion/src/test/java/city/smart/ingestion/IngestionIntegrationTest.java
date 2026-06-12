@@ -64,7 +64,7 @@ class IngestionIntegrationTest {
   void bulkReadingsPersistedAndSegmentResolved() throws Exception {
     // Seed a road segment close to the test coordinates
     jdbc.update(
-        "INSERT INTO road_segments(id, name, geometry)"
+        "INSERT INTO road_segments(id, name_en, geometry)"
             + " VALUES (?,?,ST_SetSRID(ST_MakeLine("
             + "ST_MakePoint(35.2,31.7),ST_MakePoint(35.3,31.8)),4326))",
         "seg-001",
