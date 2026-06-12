@@ -5,17 +5,17 @@ active span exists, so Loki lines can be pivoted to Tempo traces in Grafana.
 """
 
 import logging
-from typing import Any
 
 import structlog
 from opentelemetry import trace
+from structlog.types import EventDict, WrappedLogger
 
 from rl_optimizer.config import settings
 
 
 def _add_trace_context(
-    _logger: logging.Logger, _name: str, event_dict: dict[str, Any]
-) -> dict[str, Any]:
+    _logger: WrappedLogger, _name: str, event_dict: EventDict
+) -> EventDict:
     span = trace.get_current_span()
     ctx = span.get_span_context()
     if ctx.is_valid:

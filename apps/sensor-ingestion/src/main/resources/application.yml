@@ -2,11 +2,44 @@ server:
   port: 8081
   shutdown: graceful
 
+grpc:
+  port: 9091
+
 spring:
   application:
     name: sensor-ingestion
   lifecycle:
     timeout-per-shutdown-phase: 20s
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/smartcity}
+    username: ${SPRING_DATASOURCE_USERNAME:smartcity}
+    password: ${SPRING_DATASOURCE_PASSWORD:smartcity}
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+ingestion:
+  mqtt:
+    enabled: true
+    broker-url: ${MQTT_BROKER_URL:tcp://localhost:1883}
+    client-id: sensor-ingestion-service
+    topic: sensors/+/readings
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      kafka-producer:
+        register-health-indicator: true
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
 
 management:
   endpoints:
@@ -17,25 +50,16 @@ management:
     health:
       probes:
         enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
 
 logging:
-  # Structured JSON logging (Elastic Common Schema). Native Spring Boot support;
-  # remove this (or override via LOGGING_STRUCTURED_FORMAT_CONSOLE) for human-readable
-  # logs during local development. Note: requires Spring Boot >= 3.4 to take effect;
-  # on the 3.3 parent this property is ignored and plain console logging is used.
   structured:
     format:
       console: ecs
 
-# OpenTelemetry (opentelemetry-spring-boot-starter).
-#
-# The SDK is DISABLED by default so the skeleton runs anywhere without an OTLP
-# collector. To enable tracing/metrics export, set BOTH:
-#   OTEL_SDK_DISABLED=false
-#   OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-# i.e. the exporter is only active when an endpoint is provided and the SDK is
-# explicitly switched on. (otel.sdk.disabled with an env default of "true" is
-# the simple route; no conditional config needed.)
 otel:
   sdk:
     disabled: ${OTEL_SDK_DISABLED:true}
