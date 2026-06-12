@@ -1,0 +1,29 @@
+# Demand hotspots layered on top of the weekly curve. Weight is the extra
+# demand multiplier at the hotspot center; radius_m controls the gaussian
+# falloff with distance.
+hotspots:
+  - name: Mahane Yehuda Market
+    lat: 31.7845
+    lon: 35.2125
+    weight: 0.8
+    radius_m: 600
+  - name: Central Bus Station
+    lat: 31.7894
+    lon: 35.2026
+    weight: 0.7
+    radius_m: 700
+  - name: Old City Gates
+    lat: 31.7780
+    lon: 35.2290
+    weight: 0.6
+    radius_m: 800
+  - name: Talpiot Industrial Zone
+    lat: 31.7490
+    lon: 35.2235
+    weight: 0.5
+    radius_m: 900
+  - name: Givat Ram Government Quarter
+    lat: 31.7820
+    lon: 35.2010
+    weight: 0.4
+    radius_m: 800

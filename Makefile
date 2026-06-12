@@ -43,7 +43,11 @@ lint: ## Lint + typecheck all workspaces
 
 seed: ## Seed Postgres (segments, sensors, cameras) and the Neo4j road graph
 	python3 scripts/seed/seed_postgres.py
-	python3 scripts/seed/seed_neo4j.py
+	@if [ -f scripts/seed/seed_neo4j.py ]; then \
+		python3 scripts/seed/seed_neo4j.py; \
+	else \
+		echo "(neo4j seed lands in Phase 4 — skipped)"; \
+	fi
 
 sim: ## Run the sensor simulator against the local stack
 	$(COMPOSE) --profile sim up -d sensor-simulator

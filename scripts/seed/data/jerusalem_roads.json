@@ -1,0 +1,338 @@
+{
+  "_comment": "Canonical road network for the demo deployment. Coordinates are approximate polylines along real Jerusalem arteries — good enough for geospatial queries and the map UI, not survey-grade. Segments are derived per consecutive point pair by the seed script.",
+  "neighborhoods": [
+    {
+      "id": "city-center",
+      "name_en": "City Center",
+      "name_he": "מרכז העיר",
+      "name_ar": "وسط المدينة",
+      "center": [31.781, 35.217]
+    },
+    {
+      "id": "rehavia",
+      "name_en": "Rehavia",
+      "name_he": "רחביה",
+      "name_ar": "رحافيا",
+      "center": [31.772, 35.212]
+    },
+    {
+      "id": "german-colony",
+      "name_en": "German Colony",
+      "name_he": "המושבה הגרמנית",
+      "name_ar": "المستعمرة الألمانية",
+      "center": [31.762, 35.221]
+    },
+    {
+      "id": "talpiot",
+      "name_en": "Talpiot",
+      "name_he": "תלפיות",
+      "name_ar": "تلبيوت",
+      "center": [31.75, 35.224]
+    },
+    {
+      "id": "beit-hakerem",
+      "name_en": "Beit HaKerem",
+      "name_he": "בית הכרם",
+      "name_ar": "بيت هكيرم",
+      "center": [31.782, 35.192]
+    },
+    {
+      "id": "romema",
+      "name_en": "Romema",
+      "name_he": "רוממה",
+      "name_ar": "روميما",
+      "center": [31.795, 35.205]
+    },
+    {
+      "id": "ramot",
+      "name_en": "Ramot",
+      "name_he": "רמות",
+      "name_ar": "راموت",
+      "center": [31.818, 35.19]
+    },
+    {
+      "id": "sheikh-jarrah",
+      "name_en": "Sheikh Jarrah",
+      "name_he": "שייח' ג'ראח",
+      "name_ar": "الشيخ جراح",
+      "center": [31.79, 35.229]
+    },
+    {
+      "id": "old-city-basin",
+      "name_en": "Old City Basin",
+      "name_he": "אגן העיר העתיקה",
+      "name_ar": "حوض البلدة القديمة",
+      "center": [31.778, 35.23]
+    },
+    {
+      "id": "givat-shaul",
+      "name_en": "Givat Shaul",
+      "name_he": "גבעת שאול",
+      "name_ar": "جفعات شاؤول",
+      "center": [31.794, 35.185]
+    },
+    {
+      "id": "french-hill",
+      "name_en": "French Hill",
+      "name_he": "הגבעה הצרפתית",
+      "name_ar": "التلة الفرنسية",
+      "center": [31.803, 35.24]
+    },
+    {
+      "id": "katamonim",
+      "name_en": "Katamonim",
+      "name_he": "קטמונים",
+      "name_ar": "الكتمونيم",
+      "center": [31.758, 35.208]
+    }
+  ],
+  "roads": [
+    {
+      "id": "jaffa-road",
+      "name_en": "Jaffa Road",
+      "name_he": "רחוב יפו",
+      "name_ar": "شارع يافا",
+      "speed_limit_kmh": 50,
+      "neighborhood_id": "city-center",
+      "points": [
+        [31.7767, 35.2274],
+        [31.7795, 35.2225],
+        [31.7812, 35.2186],
+        [31.7842, 35.213],
+        [31.7857, 35.209],
+        [31.7894, 35.2026]
+      ]
+    },
+    {
+      "id": "king-george",
+      "name_en": "King George Street",
+      "name_he": "רחוב המלך ג'ורג'",
+      "name_ar": "شارع الملك جورج",
+      "speed_limit_kmh": 50,
+      "neighborhood_id": "city-center",
+      "points": [
+        [31.7712, 35.2188],
+        [31.7745, 35.2165],
+        [31.7775, 35.2152],
+        [31.7812, 35.2138]
+      ]
+    },
+    {
+      "id": "agripas",
+      "name_en": "Agripas Street",
+      "name_he": "רחוב אגריפס",
+      "name_ar": "شارع أغريباس",
+      "speed_limit_kmh": 40,
+      "neighborhood_id": "city-center",
+      "points": [
+        [31.7843, 35.212],
+        [31.7826, 35.2148],
+        [31.7809, 35.2169],
+        [31.7795, 35.2185]
+      ]
+    },
+    {
+      "id": "hebron-road",
+      "name_en": "Hebron Road",
+      "name_he": "דרך חברון",
+      "name_ar": "طريق الخليل",
+      "speed_limit_kmh": 60,
+      "neighborhood_id": "talpiot",
+      "points": [
+        [31.77, 35.228],
+        [31.764, 35.2265],
+        [31.757, 35.225],
+        [31.752, 35.224],
+        [31.748, 35.223]
+      ]
+    },
+    {
+      "id": "begin-boulevard",
+      "name_en": "Menachem Begin Boulevard",
+      "name_he": "שדרות מנחם בגין",
+      "name_ar": "جادة مناحم بيغن",
+      "speed_limit_kmh": 80,
+      "neighborhood_id": "romema",
+      "points": [
+        [31.805, 35.2],
+        [31.795, 35.1985],
+        [31.785, 35.197],
+        [31.77, 35.194],
+        [31.76, 35.1945],
+        [31.75, 35.195]
+      ]
+    },
+    {
+      "id": "golda-meir",
+      "name_en": "Golda Meir Boulevard",
+      "name_he": "שדרות גולדה מאיר",
+      "name_ar": "جادة غولدا مئير",
+      "speed_limit_kmh": 70,
+      "neighborhood_id": "ramot",
+      "points": [
+        [31.795, 35.205],
+        [31.802, 35.199],
+        [31.808, 35.193],
+        [31.815, 35.185]
+      ]
+    },
+    {
+      "id": "herzl-boulevard",
+      "name_en": "Herzl Boulevard",
+      "name_he": "שדרות הרצל",
+      "name_ar": "جادة هرتسل",
+      "speed_limit_kmh": 60,
+      "neighborhood_id": "beit-hakerem",
+      "points": [
+        [31.774, 35.18],
+        [31.778, 35.186],
+        [31.782, 35.192],
+        [31.786, 35.2]
+      ]
+    },
+    {
+      "id": "salah-ad-din",
+      "name_en": "Salah ad-Din Street",
+      "name_he": "רחוב צלאח א-דין",
+      "name_ar": "شارع صلاح الدين",
+      "speed_limit_kmh": 40,
+      "neighborhood_id": "sheikh-jarrah",
+      "points": [
+        [31.784, 35.229],
+        [31.7865, 35.23],
+        [31.789, 35.231]
+      ]
+    },
+    {
+      "id": "nablus-road",
+      "name_en": "Nablus Road",
+      "name_he": "דרך שכם",
+      "name_ar": "طريق نابلس",
+      "speed_limit_kmh": 50,
+      "neighborhood_id": "sheikh-jarrah",
+      "points": [
+        [31.782, 35.23],
+        [31.79, 35.228],
+        [31.796, 35.227]
+      ]
+    },
+    {
+      "id": "emek-refaim",
+      "name_en": "Emek Refaim Street",
+      "name_he": "רחוב עמק רפאים",
+      "name_ar": "شارع عيمك ريفايم",
+      "speed_limit_kmh": 40,
+      "neighborhood_id": "german-colony",
+      "points": [
+        [31.766, 35.22],
+        [31.762, 35.222],
+        [31.758, 35.224]
+      ]
+    },
+    {
+      "id": "gaza-street",
+      "name_en": "Gaza Street",
+      "name_he": "רחוב עזה",
+      "name_ar": "شارع غزة",
+      "speed_limit_kmh": 40,
+      "neighborhood_id": "rehavia",
+      "points": [
+        [31.771, 35.211],
+        [31.7725, 35.2145],
+        [31.774, 35.218]
+      ]
+    },
+    {
+      "id": "ramot-road",
+      "name_en": "Ramot Road",
+      "name_he": "דרך רמות",
+      "name_ar": "طريق راموت",
+      "speed_limit_kmh": 70,
+      "neighborhood_id": "ramot",
+      "points": [
+        [31.815, 35.185],
+        [31.82, 35.19],
+        [31.825, 35.195]
+      ]
+    },
+    {
+      "id": "route-one-north",
+      "name_en": "Bar-Lev Road",
+      "name_he": "דרך בר-לב",
+      "name_ar": "طريق بارليف",
+      "speed_limit_kmh": 70,
+      "neighborhood_id": "old-city-basin",
+      "points": [
+        [31.789, 35.226],
+        [31.8, 35.23],
+        [31.81, 35.233]
+      ]
+    },
+    {
+      "id": "kanfei-nesharim",
+      "name_en": "Kanfei Nesharim Street",
+      "name_he": "רחוב כנפי נשרים",
+      "name_ar": "شارع كنفي نشاريم",
+      "speed_limit_kmh": 50,
+      "neighborhood_id": "givat-shaul",
+      "points": [
+        [31.79, 35.18],
+        [31.7925, 35.186],
+        [31.795, 35.192],
+        [31.796, 35.198]
+      ]
+    },
+    {
+      "id": "king-david",
+      "name_en": "King David Street",
+      "name_he": "רחוב המלך דוד",
+      "name_ar": "شارع الملك داود",
+      "speed_limit_kmh": 40,
+      "neighborhood_id": "city-center",
+      "points": [
+        [31.7765, 35.2235],
+        [31.774, 35.2225],
+        [31.771, 35.2215]
+      ]
+    },
+    {
+      "id": "keren-hayesod",
+      "name_en": "Keren HaYesod Street",
+      "name_he": "רחוב קרן היסוד",
+      "name_ar": "شارع كيرن هايسود",
+      "speed_limit_kmh": 50,
+      "neighborhood_id": "rehavia",
+      "points": [
+        [31.771, 35.2215],
+        [31.7685, 35.2205],
+        [31.766, 35.219]
+      ]
+    },
+    {
+      "id": "eshkol-boulevard",
+      "name_en": "Eshkol Boulevard",
+      "name_he": "שדרות אשכול",
+      "name_ar": "جادة إشكول",
+      "speed_limit_kmh": 60,
+      "neighborhood_id": "french-hill",
+      "points": [
+        [31.799, 35.221],
+        [31.803, 35.226],
+        [31.806, 35.231]
+      ]
+    },
+    {
+      "id": "golomb-street",
+      "name_en": "Eliyahu Golomb Street",
+      "name_he": "רחוב אליהו גולומב",
+      "name_ar": "شارع إلياهو غولومب",
+      "speed_limit_kmh": 50,
+      "neighborhood_id": "katamonim",
+      "points": [
+        [31.762, 35.205],
+        [31.757, 35.21],
+        [31.752, 35.215]
+      ]
+    }
+  ]
+}
