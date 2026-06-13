@@ -1,4 +1,8 @@
-/* Phase 1 minimal global styles — Tailwind and the design system arrive in Phase 10. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Phase 1 minimal global styles */
 
 * {
   box-sizing: border-box;

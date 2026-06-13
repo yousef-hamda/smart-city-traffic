@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { isRtl, locales } from "../../i18n";
+import { Providers } from "@/components/providers";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -36,7 +37,7 @@ export default async function LocaleLayout({ children, params: { locale } }: Loc
     <html lang={locale} dir={isRtl(locale) ? "rtl" : "ltr"}>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <Providers>{children}</Providers>
         </NextIntlClientProvider>
       </body>
     </html>
