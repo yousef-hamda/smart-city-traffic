@@ -1,0 +1,26 @@
+# ArgoCD "app-of-apps": a single root Application that manages the platform
+# Application(s). Push to main -> CI bumps the image tag in this repo path ->
+# ArgoCD detects the change and syncs the cluster (GitOps). See
+# docs/deployment.md.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: smart-city-root
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/yousef-hamda/smart-city-traffic.git
+    targetRevision: main
+    path: infra/argocd/apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

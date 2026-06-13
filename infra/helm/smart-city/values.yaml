@@ -1,0 +1,59 @@
+# Platform-wide defaults. Each service is one entry under `services`; the
+# generic templates render a Deployment + Service for each. ml-prediction is
+# delivered via an Argo Rollout (canary) instead, so it is excluded from the
+# generic Deployment when rollouts.enabled is true.
+global:
+  imageRegistry: ghcr.io/yousef-hamda/smart-city
+  imageTag: "0.1.0"
+  namespace: smart-city
+
+istio:
+  enabled: true
+  mtlsMode: STRICT
+
+rollouts:
+  enabled: true
+
+services:
+  api-gateway:
+    port: 8080
+    replicas: 2
+    public: true
+  realtime-gateway:
+    port: 8088
+    replicas: 2
+    public: true
+  sensor-ingestion:
+    port: 8081
+    replicas: 2
+  vision-service:
+    port: 8082
+    replicas: 1
+  rl-optimizer:
+    port: 8084
+    replicas: 1
+  ai-assistant:
+    port: 8086
+    replicas: 1
+  voice-gateway:
+    port: 8087
+    replicas: 1
+  frontend:
+    port: 3000
+    replicas: 2
+    public: true
+
+# Delivered via Argo Rollouts (see templates/rollout-ml-prediction.yaml).
+mlPrediction:
+  port: 8083
+  replicas: 3
+  canary:
+    steps: [10, 25, 50, 100]
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi

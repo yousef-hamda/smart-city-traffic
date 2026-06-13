@@ -7,3 +7,10 @@ target
 *.lock
 pnpm-lock.yaml
 ml/notebooks
+
+# Helm chart templates are Go-templated YAML (not valid YAML until rendered).
+infra/helm/**/templates/
+# Rendered/generated manifests.
+infra/k8s/manifests.yaml
+# Standalone explainer is a generated, image-embedded artifact.
+EXPLAINER-standalone.html

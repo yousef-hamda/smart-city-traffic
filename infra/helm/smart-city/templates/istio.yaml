@@ -1,0 +1,58 @@
+{{- if .Values.istio.enabled }}
+{{/* Mesh-wide mTLS: all service-to-service traffic is encrypted + authenticated. */}}
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: {{ .Values.global.namespace }}
+spec:
+  mtls:
+    mode: {{ .Values.istio.mtlsMode }}
+---
+{{/* Retries with a budget + outlier-detection circuit breaking for every
+     in-mesh caller of ml-prediction; also defines the canary subsets that the
+     Argo Rollout shifts traffic between. */}}
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: ml-prediction
+  namespace: {{ .Values.global.namespace }}
+spec:
+  host: ml-prediction
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http2MaxRequests: 200
+        maxRequestsPerConnection: 10
+    outlierDetection:
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+  subsets:
+    - name: stable
+      labels: { app.kubernetes.io/name: ml-prediction, role: stable }
+    - name: canary
+      labels: { app.kubernetes.io/name: ml-prediction, role: canary }
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: ml-prediction
+  namespace: {{ .Values.global.namespace }}
+spec:
+  hosts: [ml-prediction]
+  http:
+    - retries:
+        attempts: 3
+        perTryTimeout: 2s
+        retryOn: 5xx,reset,connect-failure
+      route:
+        # Argo Rollouts rewrites these weights during a canary deploy.
+        - destination: { host: ml-prediction, subset: stable }
+          weight: 100
+        - destination: { host: ml-prediction, subset: canary }
+          weight: 0
+{{- end }}

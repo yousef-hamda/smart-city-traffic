@@ -1,0 +1,33 @@
+{{/* A Service per entry in .Values.services, plus one for ml-prediction. */}}
+{{- range $name, $svc := .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.global.namespace }}
+  labels:
+    {{- include "smart-city.labels" $ | nindent 4 }}
+spec:
+  selector:
+    {{- include "smart-city.selectorLabels" (dict "name" $name) | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ $svc.port }}
+      targetPort: {{ $svc.port }}
+{{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-prediction
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "smart-city.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "smart-city.selectorLabels" (dict "name" "ml-prediction") | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.mlPrediction.port }}
+      targetPort: {{ .Values.mlPrediction.port }}

@@ -1,0 +1,86 @@
+{{- if .Values.rollouts.enabled }}
+{{/* Argo Rollouts canary for the ML prediction service. Each step shifts more
+     traffic to the new version (via the Istio VirtualService weights) and runs
+     an analysis that aborts the rollout if p95 latency or the error rate
+     regress. This is how new models reach production safely. */}}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: ml-prediction
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "smart-city.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mlPrediction.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ml-prediction
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ml-prediction
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.mlPrediction.port }}"
+    spec:
+      containers:
+        - name: ml-prediction
+          image: {{ include "smart-city.image" (dict "ctx" . "name" "ml-prediction") }}
+          ports:
+            - containerPort: {{ .Values.mlPrediction.port }}
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          readinessProbe:
+            httpGet: { path: /health, port: {{ .Values.mlPrediction.port }} }
+            initialDelaySeconds: 10
+  strategy:
+    canary:
+      trafficRouting:
+        istio:
+          virtualService:
+            name: ml-prediction
+            routes: [primary]
+      steps:
+        {{- range .Values.mlPrediction.canary.steps }}
+        - setWeight: {{ . }}
+        - pause: { duration: 60s }
+        - analysis:
+            templates:
+              - templateName: ml-prediction-canary
+        {{- end }}
+---
+{{/* AnalysisTemplate: a canary step fails (and the rollout auto-rolls back) if
+     p95 latency exceeds 250ms or the success rate drops below 99%. */}}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: ml-prediction-canary
+  namespace: {{ .Values.global.namespace }}
+spec:
+  metrics:
+    - name: p95-latency
+      interval: 30s
+      count: 3
+      successCondition: result < 0.25
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: http://prometheus.{{ .Values.global.namespace }}:9090
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_server_requests_seconds_bucket{job="ml-prediction"}[1m])) by (le))
+    - name: success-rate
+      interval: 30s
+      count: 3
+      successCondition: result >= 0.99
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: http://prometheus.{{ .Values.global.namespace }}:9090
+          query: |
+            sum(rate(http_server_requests_seconds_count{job="ml-prediction",status!~"5.."}[1m]))
+              / sum(rate(http_server_requests_seconds_count{job="ml-prediction"}[1m]))
+{{- end }}

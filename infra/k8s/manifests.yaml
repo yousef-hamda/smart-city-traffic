@@ -1,0 +1,771 @@
+---
+# Source: smart-city/templates/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    istio-injection: enabled
+
+---
+# Source: smart-city/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-config
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+data:
+  # Non-secret runtime config shared by all services. Secrets come from Vault
+  # (see infra/vault) and are injected separately, never in this ConfigMap.
+  KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
+  REDIS_URL: "redis://redis:6379/0"
+  NEO4J_URI: "bolt://neo4j:7687"
+  MLFLOW_TRACKING_URI: "http://mlflow:5000"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-assistant
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: ai-assistant
+  ports:
+    - name: http
+      port: 8086
+      targetPort: 8086
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: api-gateway
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: frontend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: realtime-gateway
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: realtime-gateway
+  ports:
+    - name: http
+      port: 8088
+      targetPort: 8088
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: rl-optimizer
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: rl-optimizer
+  ports:
+    - name: http
+      port: 8084
+      targetPort: 8084
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sensor-ingestion
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: sensor-ingestion
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8081
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision-service
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: vision-service
+  ports:
+    - name: http
+      port: 8082
+      targetPort: 8082
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: voice-gateway
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: voice-gateway
+  ports:
+    - name: http
+      port: 8087
+      targetPort: 8087
+---
+# Source: smart-city/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-prediction
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  selector:
+    app.kubernetes.io/name: ml-prediction
+  ports:
+    - name: http
+      port: 8083
+      targetPort: 8083
+
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-assistant
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: ai-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ai-assistant
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ai-assistant
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8086"
+    spec:
+      containers:
+        - name: ai-assistant
+          image: ghcr.io/yousef-hamda/smart-city/ai-assistant:0.1.0
+          ports:
+            - containerPort: 8086
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8086
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8086
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: api-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-gateway
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api-gateway
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: api-gateway
+          image: ghcr.io/yousef-hamda/smart-city/api-gateway:0.1.0
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frontend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/yousef-hamda/smart-city/frontend:0.1.0
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realtime-gateway
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: realtime-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: realtime-gateway
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: realtime-gateway
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8088"
+    spec:
+      containers:
+        - name: realtime-gateway
+          image: ghcr.io/yousef-hamda/smart-city/realtime-gateway:0.1.0
+          ports:
+            - containerPort: 8088
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8088
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8088
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rl-optimizer
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: rl-optimizer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: rl-optimizer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: rl-optimizer
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8084"
+    spec:
+      containers:
+        - name: rl-optimizer
+          image: ghcr.io/yousef-hamda/smart-city/rl-optimizer:0.1.0
+          ports:
+            - containerPort: 8084
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8084
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8084
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sensor-ingestion
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: sensor-ingestion
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sensor-ingestion
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sensor-ingestion
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+    spec:
+      containers:
+        - name: sensor-ingestion
+          image: ghcr.io/yousef-hamda/smart-city/sensor-ingestion:0.1.0
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision-service
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: vision-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vision-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vision-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8082"
+    spec:
+      containers:
+        - name: vision-service
+          image: ghcr.io/yousef-hamda/smart-city/vision-service:0.1.0
+          ports:
+            - containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8082
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8082
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+# Source: smart-city/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voice-gateway
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+    app.kubernetes.io/name: voice-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: voice-gateway
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: voice-gateway
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8087"
+    spec:
+      containers:
+        - name: voice-gateway
+          image: ghcr.io/yousef-hamda/smart-city/voice-gateway:0.1.0
+          ports:
+            - containerPort: 8087
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8087
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8087
+            initialDelaySeconds: 20
+            periodSeconds: 20
+
+---
+# Source: smart-city/templates/rollout-ml-prediction.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: ml-prediction-canary
+  namespace: smart-city
+spec:
+  metrics:
+    - name: p95-latency
+      interval: 30s
+      count: 3
+      successCondition: result < 0.25
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: http://prometheus.smart-city:9090
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_server_requests_seconds_bucket{job="ml-prediction"}[1m])) by (le))
+    - name: success-rate
+      interval: 30s
+      count: 3
+      successCondition: result >= 0.99
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: http://prometheus.smart-city:9090
+          query: |
+            sum(rate(http_server_requests_seconds_count{job="ml-prediction",status!~"5.."}[1m]))
+              / sum(rate(http_server_requests_seconds_count{job="ml-prediction"}[1m]))
+
+---
+# Source: smart-city/templates/istio.yaml
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: ml-prediction
+  namespace: smart-city
+spec:
+  host: ml-prediction
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http2MaxRequests: 200
+        maxRequestsPerConnection: 10
+    outlierDetection:
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+  subsets:
+    - name: stable
+      labels: { app.kubernetes.io/name: ml-prediction, role: stable }
+    - name: canary
+      labels: { app.kubernetes.io/name: ml-prediction, role: canary }
+---
+# Source: smart-city/templates/istio.yaml
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: smart-city
+spec:
+  mtls:
+    mode: STRICT
+---
+# Source: smart-city/templates/rollout-ml-prediction.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: ml-prediction
+  namespace: smart-city
+  labels:
+    app.kubernetes.io/part-of: smart-city-traffic
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: smart-city-0.1.0
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ml-prediction
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ml-prediction
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8083"
+    spec:
+      containers:
+        - name: ml-prediction
+          image: ghcr.io/yousef-hamda/smart-city/ml-prediction:0.1.0
+          ports:
+            - containerPort: 8083
+          envFrom:
+            - configMapRef:
+                name: platform-config
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet: { path: /health, port: 8083 }
+            initialDelaySeconds: 10
+  strategy:
+    canary:
+      trafficRouting:
+        istio:
+          virtualService:
+            name: ml-prediction
+            routes: [primary]
+      steps:
+        - setWeight: 10
+        - pause: { duration: 60s }
+        - analysis:
+            templates:
+              - templateName: ml-prediction-canary
+        - setWeight: 25
+        - pause: { duration: 60s }
+        - analysis:
+            templates:
+              - templateName: ml-prediction-canary
+        - setWeight: 50
+        - pause: { duration: 60s }
+        - analysis:
+            templates:
+              - templateName: ml-prediction-canary
+        - setWeight: 100
+        - pause: { duration: 60s }
+        - analysis:
+            templates:
+              - templateName: ml-prediction-canary
+---
+# Source: smart-city/templates/istio.yaml
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: ml-prediction
+  namespace: smart-city
+spec:
+  hosts: [ml-prediction]
+  http:
+    - retries:
+        attempts: 3
+        perTryTimeout: 2s
+        retryOn: 5xx,reset,connect-failure
+      route:
+        # Argo Rollouts rewrites these weights during a canary deploy.
+        - destination: { host: ml-prediction, subset: stable }
+          weight: 100
+        - destination: { host: ml-prediction, subset: canary }
+          weight: 0
