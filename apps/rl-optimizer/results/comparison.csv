@@ -1,0 +1,6 @@
+controller,throughput,total_wait_s,mean_wait_per_vehicle_s,avg_queue
+fixed-time,2226,28706.5,12.89,15.81
+webster,2227,20074.2,9.01,10.6
+max-pressure,2230,18399.7,8.26,9.46
+dqn,1244,716056.5,576.38,398.94
+ppo,2232,20182.7,9.04,10.77

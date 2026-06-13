@@ -5,13 +5,15 @@ build-backend = "hatchling.build"
 [project]
 name = "smart-city-rl-optimizer"
 version = "0.1.0"
-description = "DQN/PPO agents trained against a SUMO Gymnasium environment; serves signal-timing recommendations. Lands in Phase 7."
+description = "DQN/PPO traffic-signal controllers trained on a Gymnasium env, benchmarked against classical baselines; serves signal-timing recommendations."
 authors = [{ name = "Yousef Hasan Hamda", email = "yousef123hamda@gmail.com" }]
 license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.111",
     "uvicorn[standard]>=0.30",
+    "gymnasium>=0.29",
+    "numpy>=1.26",
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
     "structlog>=24.1",
@@ -22,6 +24,16 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# Training stack (SB3 pulls torch); the env, baselines, evaluation, and serving
+# all work without it, so it is opt-in.
+train = [
+    "stable-baselines3>=2.3",
+    "mlflow>=2.14",
+    "pandas>=2.2",
+    "matplotlib>=3.8",
+]
+# SUMO microsimulation backend (needs the native SUMO binary too).
+sumo = ["traci>=1.20"]
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
@@ -49,6 +61,14 @@ strict = true
 mypy_path = "src"
 plugins = ["pydantic.mypy"]
 
+[[tool.mypy.overrides]]
+module = [
+    "gymnasium", "gymnasium.*", "stable_baselines3", "stable_baselines3.*",
+    "mlflow", "torch", "traci", "matplotlib", "matplotlib.*", "pandas",
+]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 pythonpath = ["src"]
+markers = ["slow: marks tests that train an RL agent (deselect with '-m not slow')"]
