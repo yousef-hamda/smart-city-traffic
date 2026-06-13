@@ -1,0 +1,59 @@
+# Prometheus scrape config for the platform. Each service exposes metrics on
+# its own port (/metrics for the Node/Python services, /actuator/prometheus for
+# Spring Boot). Alert rules live in alerts.yml; Alertmanager handles routing.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    platform: smart-city-traffic
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+  - /etc/prometheus/slo_alerts.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: sensor-ingestion
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["sensor-ingestion:8081"]
+
+  - job_name: vision-service
+    static_configs:
+      - targets: ["vision-service:8082"]
+
+  - job_name: ml-prediction
+    static_configs:
+      - targets: ["ml-prediction:8083"]
+
+  - job_name: rl-optimizer
+    static_configs:
+      - targets: ["rl-optimizer:8084"]
+
+  - job_name: ai-assistant
+    static_configs:
+      - targets: ["ai-assistant:8086"]
+
+  - job_name: api-gateway
+    static_configs:
+      - targets: ["api-gateway:8080"]
+
+  - job_name: realtime-gateway
+    static_configs:
+      - targets: ["realtime-gateway:8088"]
+
+  - job_name: tempo
+    static_configs:
+      - targets: ["tempo:3200"]
+
+  - job_name: loki
+    static_configs:
+      - targets: ["loki:3100"]

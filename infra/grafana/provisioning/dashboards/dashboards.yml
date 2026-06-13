@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: smart-city
+    folder: Smart City Traffic
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards

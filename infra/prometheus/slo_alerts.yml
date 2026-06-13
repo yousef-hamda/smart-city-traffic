@@ -1,0 +1,43 @@
+# Error-budget burn-rate alerts for the API availability SLO (99.9% success).
+# Multi-window, multi-burn-rate (Google SRE workbook): a fast-burning budget
+# fires quickly on a short+long window pair; a slow burn fires on longer
+# windows. This catches both acute outages and slow leaks without flapping.
+# See docs/runbooks/slos.md.
+groups:
+  - name: slo-api-availability
+    rules:
+      # Success-ratio recording rules over several windows.
+      - record: job:http_request_success_ratio:rate5m
+        expr: |
+          sum(rate(http_server_requests_seconds_count{job="api-gateway",status!~"5.."}[5m]))
+            / sum(rate(http_server_requests_seconds_count{job="api-gateway"}[5m]))
+      - record: job:http_request_success_ratio:rate1h
+        expr: |
+          sum(rate(http_server_requests_seconds_count{job="api-gateway",status!~"5.."}[1h]))
+            / sum(rate(http_server_requests_seconds_count{job="api-gateway"}[1h]))
+      - record: job:http_request_success_ratio:rate6h
+        expr: |
+          sum(rate(http_server_requests_seconds_count{job="api-gateway",status!~"5.."}[6h]))
+            / sum(rate(http_server_requests_seconds_count{job="api-gateway"}[6h]))
+
+      # Fast burn: 14.4x budget over 1h (alerts within minutes of a real outage).
+      - alert: ApiErrorBudgetFastBurn
+        expr: |
+          (1 - job:http_request_success_ratio:rate5m) > (14.4 * 0.001)
+          and (1 - job:http_request_success_ratio:rate1h) > (14.4 * 0.001)
+        for: 2m
+        labels: { severity: critical, slo: api-availability }
+        annotations:
+          summary: "API burning error budget fast (14.4x)"
+          description: "At this rate the 30-day 99.9% budget is exhausted in ~2 days. Page on-call."
+
+      # Slow burn: 3x budget over 6h (catches a persistent low-grade failure).
+      - alert: ApiErrorBudgetSlowBurn
+        expr: |
+          (1 - job:http_request_success_ratio:rate1h) > (3 * 0.001)
+          and (1 - job:http_request_success_ratio:rate6h) > (3 * 0.001)
+        for: 15m
+        labels: { severity: warning, slo: api-availability }
+        annotations:
+          summary: "API burning error budget slowly (3x)"
+          description: "A persistent low-grade failure is eroding the availability budget."
