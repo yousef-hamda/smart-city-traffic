@@ -1,0 +1,31 @@
+Jerusalem Road Segments — Metadata
+
+Route 1 (Begin Road / Highway 1):
+segment route1-01: Eastern entrance to Jerusalem, connecting to the Mishor Adumim junction. Speed limit 100 km/h. 4 lanes. Length ~2.3 km. High-volume intercity corridor.
+segment route1-02: Descent into the city near the Ammunition Hill junction. Speed limit 80 km/h. 4 lanes. Known bottleneck during rush hours.
+segment route1-03: Urban stretch near French Hill interchange. Speed limit 70 km/h. 3 lanes each direction. Frequent congestion 07:00–09:00.
+segment route1-04: Junction at Givat Shaul / Begin interchange. Speed limit 80 km/h. Interchanges with Route 9 and Begin Boulevard.
+
+Begin Boulevard (Route 9):
+segment begin-01: Northern section from Givat Shaul to Bar-Ilan interchange. Speed limit 80 km/h. 3 lanes.
+segment begin-02: Central section passing the Malha Mall exit. Speed limit 70 km/h. Dense commercial traffic on weekends.
+segment begin-03: Southern approach toward Talpiot. Speed limit 60 km/h. 2 lanes. Construction zone in 2024.
+
+Derech Hevron (Hebron Road):
+segment hevron-01: North segment from Jaffa Gate toward Talpiot. Speed limit 50 km/h. Urban arterial.
+segment hevron-02: Southern segment toward Gilo junction. Speed limit 60 km/h. Bus priority lane.
+
+Jaffa Road (Derech Yafo):
+segment jaffa-01: From the Central Bus Station toward City Center. Speed limit 40 km/h. Light rail runs along this corridor.
+segment jaffa-02: Historic City Center section near Zion Square. Speed limit 30 km/h. Pedestrian zone on Friday afternoons.
+
+Road 60 (Tunnel Road):
+segment road60-01: Northern approach to Gilo Tunnel. Speed limit 80 km/h. High-speed bypass avoiding city center.
+segment road60-02: Tunnel section beneath the Gilo neighborhood. Speed limit 80 km/h. Controlled lighting, no incidents since 2022.
+segment road60-03: Southern exit toward Bethlehem junction. Speed limit 80 km/h. 2 lanes each direction.
+
+Ammunition Hill Junction:
+Connects Route 1 with the northern neighborhoods (French Hill, Ramat Eshkol). Managed by traffic signals; average delay 45s during peak.
+
+French Hill Interchange:
+Complex 3-level interchange connecting Route 1, the northern ring road, and Neve Ya'akov boulevard.

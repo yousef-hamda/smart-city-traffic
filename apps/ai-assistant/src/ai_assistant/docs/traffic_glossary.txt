@@ -1,0 +1,76 @@
+Jerusalem Traffic Glossary — English / Hebrew / Arabic
+
+1. Traffic Jam / פקק תנועה / ازدحام مروري
+   A situation where vehicles are stopped or moving very slowly due to high density.
+
+2. Congestion / עומס תנועה / ازدحام
+   Increased vehicle density on a road causing reduced speeds and longer travel times.
+
+3. Speed Limit / מגבלת מהירות / حد السرعة
+   Maximum legal speed on a road segment, measured in km/h.
+
+4. Rush Hour / שעת שיא / ساعة الذروة
+   Peak traffic periods, typically 07:00–09:30 and 16:00–19:00 in Jerusalem.
+
+5. Incident / תקרית / حادثة
+   An event affecting traffic flow: accident, vehicle breakdown, debris on road.
+
+6. Road Closure / סגירת כביש / إغلاق طريق
+   Full or partial blockage of a road segment to traffic.
+
+7. Detour / עקיפה / مسار بديل
+   Alternative route taken to avoid congestion or a closure.
+
+8. Bottleneck / צוואר בקבוק / نقطة اختناق
+   A narrow section of road where capacity is lower than demand, causing backups.
+
+9. Throughput / תפוקה / الإنتاجية
+   Number of vehicles passing a point per unit time (veh/hour).
+
+10. Intersection / צומת / تقاطع
+    A junction where two or more roads meet or cross.
+
+11. Traffic Light / רמזור / إشارة ضوئية
+    Automated signal controlling vehicle flow at an intersection.
+
+12. Green Wave / גל ירוק / موجة خضراء
+    Coordination of traffic signals to allow continuous flow along a corridor.
+
+13. Flow Rate / ספיקת תנועה / معدل التدفق
+    Volume of traffic passing a sensor, measured in vehicles per minute.
+
+14. Occupancy / תפוסה / الإشغال
+    Percentage of time a road section is occupied by vehicles.
+
+15. Free-Flow Speed / מהירות חופשית / سرعة التدفق الحر
+    Speed at which vehicles travel when there is no congestion.
+
+16. Level of Service (LOS) / רמת שירות / مستوى الخدمة
+    A–F scale measuring road performance; A = free flow, F = breakdown.
+
+17. Sensor / חיישן / مستشعر
+    A device measuring traffic parameters: loop detector, camera, radar.
+
+18. Road Segment / קטע כביש / مقطع طريق
+    A defined portion of a road between two junctions or waypoints.
+
+19. Shortest Path / מסלול קצר ביותר / أقصر مسار
+    The route minimising travel time or distance between origin and destination.
+
+20. Reachability / נגישות / إمكانية الوصول
+    Whether a destination can be reached from an origin given current network state.
+
+21. Edge Weight / משקל קשת / وزن الحافة
+    Travel time or distance assigned to a road edge in the graph model.
+
+22. Pedestrian Zone / אזור להולכי רגל / منطقة المشاة
+    A street section restricted from motor vehicle traffic.
+
+23. Bus Lane / נתיב אוטובוס / مسرب الحافلات
+    A dedicated lane reserved for public buses, sometimes taxis.
+
+24. Light Rail / רכבת קלה / القطار الخفيف
+    Jerusalem's tram system running primarily along Jaffa Road.
+
+25. Parking Congestion / פקק חניה / ازدحام موقف السيارات
+    Traffic backups caused by vehicles searching for or queuing for parking.
