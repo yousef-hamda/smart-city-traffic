@@ -1,0 +1,27 @@
+# Superset dashboard export — incident impact.
+dashboard_title: Incident Analysis
+description: Where and how much incidents slowed traffic vs baseline.
+slug: incident-analysis
+charts:
+  - slice_name: Likely-incident hours
+    viz_type: big_number_total
+    dataset: mart_incident_impact
+    params:
+      metric: { aggregate: SUM, column: likely_incident_hour, label: "Incident hours" }
+  - slice_name: Speed deficit by segment
+    viz_type: echarts_timeseries_bar
+    dataset: mart_incident_impact
+    params:
+      x_axis: segment_id
+      metrics: [{ aggregate: AVG, column: speed_deficit_kmh, label: "Speed deficit (km/h)" }]
+      order_desc: true
+      row_limit: 20
+  - slice_name: Relative slowdown over time
+    viz_type: echarts_timeseries_line
+    dataset: mart_incident_impact
+    params:
+      x_axis: event_date
+      metrics: [{ aggregate: AVG, column: relative_slowdown, label: "Relative slowdown" }]
+layout:
+  - row: [Likely-incident hours, Speed deficit by segment]
+  - row: [Relative slowdown over time]

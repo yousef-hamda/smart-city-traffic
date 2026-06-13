@@ -1,0 +1,27 @@
+# Superset dashboard export — carbon impact of RL signal optimization.
+dashboard_title: Carbon Impact
+description: Estimated CO2 saved by RL-optimized signals vs fixed-time control.
+slug: carbon-impact
+charts:
+  - slice_name: Total CO2 saved (kg)
+    viz_type: big_number_total
+    dataset: mart_carbon_savings
+    params:
+      metric: { aggregate: SUM, column: co2_kg_saved, label: "CO2 saved (kg)" }
+  - slice_name: CO2 saved by segment
+    viz_type: echarts_timeseries_bar
+    dataset: mart_carbon_savings
+    params:
+      x_axis: segment_id
+      metrics: [{ aggregate: SUM, column: co2_kg_saved, label: "CO2 saved (kg)" }]
+      order_desc: true
+      row_limit: 20
+  - slice_name: CO2 saved over time
+    viz_type: echarts_timeseries_line
+    dataset: mart_carbon_savings
+    params:
+      x_axis: event_date
+      metrics: [{ aggregate: SUM, column: co2_kg_saved, label: "CO2 saved (kg)" }]
+layout:
+  - row: [Total CO2 saved (kg)]
+  - row: [CO2 saved by segment, CO2 saved over time]

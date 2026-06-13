@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Streaming Iceberg tables landed by the Flink kafka_to_iceberg job.
+    catalog: iceberg
+    schema: raw
+    tables:
+      - name: readings
+        description: Per-sensor traffic readings (segment_id, speed, occupancy, count).
+        columns:
+          - name: segment_id
+            tests: [not_null]
+          - name: avg_speed_kmh
+      - name: vision_events
+        description: Per-frame vision events (vehicle counts, incidents) by camera/segment.
+
+  - name: ref
+    description: Reference dimensions seeded into Postgres / the lake.
+    catalog: iceberg
+    schema: ref
+    tables:
+      - name: road_segments
+        description: Segment dimension (name, neighborhood, speed limit).

@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: mart_segment_hourly
+    description: Hourly performance per segment — the BI backbone fact table.
+    columns:
+      - name: segment_id
+        tests: [not_null]
+      - name: congestion_index
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+  - name: mart_incident_impact
+    description: Per segment-hour slowdown vs that segment's baseline speed.
+    columns:
+      - name: segment_id
+        tests: [not_null]
+  - name: mart_carbon_savings
+    description: Estimated CO2 saved by RL vs fixed-time signals, per segment-day.
+    columns:
+      - name: co2_kg_saved
+        tests: [not_null]

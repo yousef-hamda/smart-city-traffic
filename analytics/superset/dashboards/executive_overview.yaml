@@ -1,0 +1,30 @@
+# Superset dashboard export (importable via `superset import-dashboards`).
+# Datasets are the dbt marts exposed through the Trino iceberg catalog.
+dashboard_title: Executive Overview
+description: Network-wide health at a glance for city leadership.
+slug: executive-overview
+charts:
+  - slice_name: Network avg speed (24h)
+    viz_type: big_number_total
+    dataset: mart_segment_hourly
+    params:
+      metric: { aggregate: AVG, column: avg_speed_kmh, label: "Avg speed (km/h)" }
+  - slice_name: Total vehicles today
+    viz_type: big_number_total
+    dataset: mart_segment_hourly
+    params:
+      metric: { aggregate: SUM, column: total_vehicles, label: "Vehicles" }
+  - slice_name: CO2 saved (kg, today)
+    viz_type: big_number_total
+    dataset: mart_carbon_savings
+    params:
+      metric: { aggregate: SUM, column: co2_kg_saved, label: "CO2 saved (kg)" }
+  - slice_name: Congestion by hour
+    viz_type: echarts_timeseries_line
+    dataset: mart_segment_hourly
+    params:
+      x_axis: event_hour
+      metrics: [{ aggregate: AVG, column: congestion_index, label: "Congestion index" }]
+layout:
+  - row: [Network avg speed (24h), Total vehicles today, CO2 saved (kg, today)]
+  - row: [Congestion by hour]

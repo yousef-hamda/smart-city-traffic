@@ -1,0 +1,29 @@
+# Superset dashboard export — per-segment deep dive.
+dashboard_title: Segment Performance
+description: Speed, occupancy, and congestion ranked by road segment.
+slug: segment-performance
+charts:
+  - slice_name: Top congested segments
+    viz_type: echarts_timeseries_bar
+    dataset: mart_segment_hourly
+    params:
+      x_axis: segment_id
+      metrics: [{ aggregate: AVG, column: congestion_index, label: "Congestion index" }]
+      order_desc: true
+      row_limit: 20
+  - slice_name: Peak-hour heatmap
+    viz_type: heatmap
+    dataset: mart_segment_hourly
+    params:
+      x_axis: event_hour
+      groupby: [event_dow]
+      metric: { aggregate: AVG, column: congestion_index, label: "Congestion" }
+  - slice_name: Avg speed by segment
+    viz_type: table
+    dataset: mart_segment_hourly
+    params:
+      groupby: [segment_id]
+      metrics: [{ aggregate: AVG, column: avg_speed_kmh, label: "Avg speed" }]
+layout:
+  - row: [Top congested segments]
+  - row: [Peak-hour heatmap, Avg speed by segment]

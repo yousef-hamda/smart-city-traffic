@@ -1,0 +1,23 @@
+name: "smart_city_traffic"
+version: "1.0.0"
+config-version: 2
+
+profile: "smart_city_traffic"
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Raw lands as a streaming Iceberg table (Flink); dbt builds staging views and
+# materialized marts on top, all through Trino's iceberg catalog.
+models:
+  smart_city_traffic:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: mart

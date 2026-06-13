@@ -1,0 +1,15 @@
+# dbt connects to the lake through Trino (dbt-trino), which queries the Iceberg
+# tables in MinIO. Copy into ~/.dbt/profiles.yml or set DBT_PROFILES_DIR here.
+smart_city_traffic:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      method: none
+      host: "{{ env_var('TRINO_HOST', 'localhost') }}"
+      port: "{{ env_var('TRINO_PORT', '8080') | as_number }}"
+      user: "{{ env_var('TRINO_USER', 'analytics') }}"
+      catalog: iceberg
+      schema: mart
+      threads: 4
+      http_scheme: http
