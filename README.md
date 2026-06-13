@@ -5,6 +5,10 @@
 > signals, a 3D digital twin, and a Claude-powered assistant. Built as a
 > production-grade, polyglot microservices system.
 
+[![📘 Non-coder explainer](https://img.shields.io/badge/📘_Non--coder_explainer-open_in_browser-0d9488?style=for-the-badge)](https://yousef-hamda.github.io/smart-city-traffic/EXPLAINER.html)
+[![📄 Explainer PDF](https://img.shields.io/badge/📄_Explainer-PDF-b91c1c?style=for-the-badge)](EXPLAINER.pdf)
+&nbsp;·&nbsp; License: MIT · Languages: TypeScript · Python · Java
+
 **Status: under active construction.** This README tracks reality, not
 aspiration — sections appear as the phases that implement them land. The full
 build plan lives in the commit history (one conventional-commit series per
@@ -17,11 +21,21 @@ phase) and [`docs/architecture.md`](docs/architecture.md).
 > They illustrate the intended product while the frontend is wired up. The
 > traffic data throughout the platform comes from clearly-labeled simulators.
 
-## New here? Start with the fun tour 🎉
-
-Not a developer? Open [**`EXPLAINER.html`**](EXPLAINER.html) in any web browser
-(or read [**`EXPLAINER.pdf`**](EXPLAINER.pdf)) for an animated, plain-language
-tour of what this project does and how it works — no technical knowledge needed.
+> [!TIP]
+>
+> ### 📘 Not a coder? Read this first — here's what's inside
+>
+> An animated, plain-language walkthrough (no jargon): a one-sentence summary
+> and an everyday analogy, an animated "journey of a traffic reading", hover
+> cards explaining each part (with the real "coder words"), one annotated code
+> snippet, a mini-dictionary of tech terms, the screens below, and count-up
+> stats.
+>
+> - **View online (rendered):** <https://yousef-hamda.github.io/smart-city-traffic/EXPLAINER.html>
+>   _(once GitHub Pages is enabled — see [Viewing the explainer](#viewing-the-explainer))_
+> - **Locally:** download & **double-click** [`EXPLAINER.html`](EXPLAINER.html)
+> - **No browser?** open [`EXPLAINER.pdf`](EXPLAINER.pdf)
+> - **Share as one file** (email/USB): [`EXPLAINER-standalone.html`](EXPLAINER-standalone.html) (images baked in)
 
 ## What it is
 
@@ -74,10 +88,32 @@ scripts/     seeds · kafka topics · load tests · security scans
 | ![3D digital twin (mockup)](docs/images/mockup_03_twin.png) | ![AI assistant (mockup)](docs/images/mockup_04_assistant.png)               |
 | **3D digital twin**                                         | **AI assistant** (EN · עברית · العربية)                                     |
 
+## Viewing the explainer
+
+GitHub shows the **source** of `.html` files, not the rendered page. Three ways
+to see it properly:
+
+1. **Locally (instant):** download [`EXPLAINER.html`](EXPLAINER.html) and
+   double-click it (keep it next to `docs/images/`), or open the all-in-one
+   [`EXPLAINER-standalone.html`](EXPLAINER-standalone.html) which needs nothing
+   else.
+2. **PDF:** open [`EXPLAINER.pdf`](EXPLAINER.pdf).
+3. **Online (rendered) via GitHub Pages** — one-time setup: in the repo,
+   **Settings ▸ Pages ▸ Build and deployment**, set **Source: Deploy from a
+   branch**, **Branch: `main` / `/ (root)`**, Save. After a minute the site is
+   live at <https://yousef-hamda.github.io/smart-city-traffic/> (the included
+   `index.html` redirects to the explainer; `.nojekyll` keeps Pages from
+   reprocessing the files). The README badges already point here.
+
+> The explainer files are committed locally and need a `git push` before they
+> appear on GitHub or Pages.
+
 ## Documentation
 
-- [Architecture](docs/architecture.md) · [ADRs](docs/adr/)
-- Plain-language tour: [EXPLAINER.html](EXPLAINER.html) · [EXPLAINER.pdf](EXPLAINER.pdf)
+- [Architecture](docs/architecture.md) · [ADRs](docs/adr/) ·
+  [ML](docs/ml.md) · [RL](docs/rl.md)
+- Plain-language tour: [EXPLAINER.html](EXPLAINER.html) ·
+  [standalone](EXPLAINER-standalone.html) · [PDF](EXPLAINER.pdf)
 - Per-service READMEs under `apps/<service>/README.md`
 
 ## License
