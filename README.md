@@ -10,11 +10,18 @@ aspiration — sections appear as the phases that implement them land. The full
 build plan lives in the commit history (one conventional-commit series per
 phase) and [`docs/architecture.md`](docs/architecture.md).
 
+![Product tour (UI mockups)](docs/images/product-tour.gif)
+
+> ⚠️ **The images above and below are UI previews (mockups)** — polished
+> designs of the interface, **not** screenshots captured from the running app.
+> They illustrate the intended product while the frontend is wired up. The
+> traffic data throughout the platform comes from clearly-labeled simulators.
+
 ## New here? Start with the fun tour 🎉
 
 Not a developer? Open [**`EXPLAINER.html`**](EXPLAINER.html) in any web browser
-for an animated, plain-language tour of what this project does and how it works
-— no technical knowledge needed.
+(or read [**`EXPLAINER.pdf`**](EXPLAINER.pdf)) for an animated, plain-language
+tour of what this project does and how it works — no technical knowledge needed.
 
 ## What it is
 
@@ -56,9 +63,21 @@ docs/        architecture · ADRs · runbooks · chaos game-day
 scripts/     seeds · kafka topics · load tests · security scans
 ```
 
+## Screenshots
+
+> **UI previews (mockups)** — interface designs, not captures of the running app.
+
+|                                                             |                                                                             |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------- |
+| ![Dashboard (mockup)](docs/images/mockup_01_dashboard.png)  | ![Segment drill-down with SHAP (mockup)](docs/images/mockup_02_segment.png) |
+| **Live dashboard** — map, KPIs, alerts                      | **Segment drill-down** — forecast + SHAP                                    |
+| ![3D digital twin (mockup)](docs/images/mockup_03_twin.png) | ![AI assistant (mockup)](docs/images/mockup_04_assistant.png)               |
+| **3D digital twin**                                         | **AI assistant** (EN · עברית · العربية)                                     |
+
 ## Documentation
 
 - [Architecture](docs/architecture.md) · [ADRs](docs/adr/)
+- Plain-language tour: [EXPLAINER.html](EXPLAINER.html) · [EXPLAINER.pdf](EXPLAINER.pdf)
 - Per-service READMEs under `apps/<service>/README.md`
 
 ## License

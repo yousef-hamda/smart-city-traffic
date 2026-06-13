@@ -5,472 +5,441 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Smart City Traffic — Explained for Everyone 🚦</title>
     <style>
-      /* ============================================================
-         A single self-contained page. No internet needed — just open
-         it in any browser. Everything (pictures + animation) is drawn
-         with CSS and emoji so a non-coder can simply enjoy it.
-         ============================================================ */
+      /* ================================================================
+         ONE self-contained file. No internet, no build step — just open
+         it in a browser. All pictures + animation are CSS & a little
+         vanilla JS. Written for someone who has never seen code. ❤️
+         ================================================================ */
       :root {
-        --bg: #0b1120;
-        --bg2: #131c31;
-        --card: #1a2540;
-        --ink: #e9eefb;
-        --muted: #9fb0d0;
-        --accent: #5b8cff;
+        --bg: #0b1020;
+        --bg2: #141d36;
+        --card: #18223d;
+        --card2: #1f2c4d;
+        --ink: #eaf0ff;
+        --muted: #9fb0d4;
+        --accent: #6a93ff;
+        --accent2: #8b5cf6;
         --good: #34d399;
         --warn: #fbbf24;
         --bad: #fb5b6d;
-        --line: #2a3658;
+        --line: #2a3760;
       }
       * { box-sizing: border-box; }
       html { scroll-behavior: smooth; }
       body {
         margin: 0;
         font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-        background: radial-gradient(1200px 800px at 50% -10%, #1b2748, var(--bg));
+        background: var(--bg);
         color: var(--ink);
         line-height: 1.65;
         overflow-x: hidden;
       }
-      h1, h2, h3 { line-height: 1.2; }
+      h1, h2, h3 { line-height: 1.18; }
       a { color: var(--accent); }
-      .wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+      .wrap { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
       .muted { color: var(--muted); }
+      section { padding: 56px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+      section h2 { font-size: clamp(24px, 4vw, 36px); margin: 0 0 8px; }
+      section h2 .e { margin-right: 10px; }
+      .lead { color: var(--muted); max-width: 740px; font-size: 18px; }
 
-      /* ---------- HERO ---------- */
+      /* ---------- scroll reveal ---------- */
+      .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+      .reveal.in { opacity: 1; transform: none; }
+
+      /* ===================== 1. HERO ===================== */
       header {
         position: relative;
-        padding: 70px 0 40px;
+        padding: 92px 0 56px;
         text-align: center;
         overflow: hidden;
+        background:
+          radial-gradient(900px 520px at 50% -20%, rgba(106, 147, 255, 0.35), transparent 60%),
+          radial-gradient(700px 480px at 85% 0%, rgba(139, 92, 246, 0.28), transparent 55%),
+          linear-gradient(180deg, #0e1530, var(--bg));
       }
+      .float { position: absolute; font-size: 40px; opacity: 0.8; animation: bob 6s ease-in-out infinite; filter: drop-shadow(0 8px 10px rgba(0,0,0,.35)); }
+      .float.f1 { left: 8%;  top: 26%; animation-delay: 0s; }
+      .float.f2 { left: 86%; top: 22%; animation-delay: -1.5s; }
+      .float.f3 { left: 16%; top: 64%; animation-delay: -3s; font-size: 32px; }
+      .float.f4 { left: 80%; top: 60%; animation-delay: -4.5s; font-size: 34px; }
+      @keyframes bob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-18px) rotate(4deg); } }
       .badge {
-        display: inline-block;
-        font-size: 13px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--accent);
-        background: rgba(91, 140, 255, 0.12);
-        border: 1px solid rgba(91, 140, 255, 0.35);
-        padding: 6px 14px;
-        border-radius: 999px;
-        margin-bottom: 18px;
+        display: inline-block; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+        color: #cdd9ff; background: rgba(106, 147, 255, 0.14); border: 1px solid rgba(106, 147, 255, 0.4);
+        padding: 6px 14px; border-radius: 999px; margin-bottom: 18px;
       }
       header h1 {
-        font-size: clamp(30px, 6vw, 56px);
-        margin: 6px 0 10px;
-        background: linear-gradient(90deg, #fff, #8fb0ff 60%, #34d399);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        font-size: clamp(34px, 7vw, 64px); margin: 6px 0 12px; position: relative;
+        background: linear-gradient(90deg, #fff, #9db8ff 55%, #34d399);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        animation: beat 3.2s ease-in-out infinite;
       }
-      header p.tag { font-size: clamp(16px, 2.4vw, 21px); color: var(--muted); margin: 0 auto; max-width: 640px; }
+      @keyframes beat { 0%,100% { letter-spacing: 0; } 50% { letter-spacing: 0.6px; filter: brightness(1.08); } }
+      header p.tag { font-size: clamp(16px, 2.4vw, 21px); color: var(--muted); margin: 0 auto; max-width: 660px; }
+      .scrollcue { margin-top: 40px; color: var(--muted); font-size: 14px; }
+      .scrollcue .arrow { display: block; font-size: 26px; animation: down 1.6s ease-in-out infinite; }
+      @keyframes down { 0%,100% { transform: translateY(0); opacity: .6; } 50% { transform: translateY(8px); opacity: 1; } }
 
-      /* ---------- animated road in the hero ---------- */
-      .road {
-        position: relative;
-        height: 120px;
-        margin: 36px auto 0;
-        max-width: 920px;
-        border-radius: 16px;
-        background: linear-gradient(#26314f, #1c2540);
-        border: 1px solid var(--line);
-        overflow: hidden;
-      }
-      .lane-line {
-        position: absolute;
-        left: 0; right: 0;
-        height: 3px;
-        background: repeating-linear-gradient(90deg, #d7e0f5 0 28px, transparent 28px 60px);
-        opacity: 0.5;
-        animation: dash 1.1s linear infinite;
-      }
-      .lane-line.l1 { top: 40px; }
-      .lane-line.l2 { top: 80px; }
+      /* hero road */
+      .road { position: relative; height: 120px; margin: 40px auto 0; max-width: 940px; border-radius: 16px; background: linear-gradient(#26314f, #1b2440); border: 1px solid var(--line); overflow: hidden; }
+      .lane { position: absolute; left: 0; right: 0; height: 3px; background: repeating-linear-gradient(90deg, #d7e0f5 0 28px, transparent 28px 60px); opacity: .45; animation: dash 1.1s linear infinite; }
+      .lane.a { top: 40px; } .lane.b { top: 80px; }
       @keyframes dash { to { background-position: 60px 0; } }
-      .car {
-        position: absolute;
-        font-size: 30px;
-        animation: drive linear infinite;
-        filter: drop-shadow(0 6px 6px rgba(0,0,0,0.35));
-      }
-      @keyframes drive {
-        from { transform: translateX(-80px); }
-        to   { transform: translateX(980px); }
-      }
-      .car.c1 { top: 12px;  animation-duration: 5s;   }
-      .car.c2 { top: 52px;  animation-duration: 7s;   animation-delay: -2s; }
-      .car.c3 { top: 52px;  animation-duration: 4.2s; animation-delay: -1s; }
-      .car.c4 { top: 92px;  animation-duration: 6.2s; animation-delay: -3s; }
-      .car.c5 { top: 12px;  animation-duration: 8s;   animation-delay: -5s; }
-      .sensor {
-        position: absolute; bottom: 6px; width: 10px; height: 10px;
-        border-radius: 50%; background: var(--good);
-        box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
-        animation: ping 2s ease-out infinite;
-      }
-      .sensor.s2 { left: 38%; animation-delay: 0.7s; }
-      .sensor.s3 { left: 66%; animation-delay: 1.3s; background: var(--warn); box-shadow: 0 0 0 0 rgba(251,191,36,.6);}
-      .sensor.s1 { left: 12%; }
-      @keyframes ping {
-        0%   { box-shadow: 0 0 0 0 rgba(52,211,153,0.55); }
-        100% { box-shadow: 0 0 0 22px rgba(52,211,153,0); }
-      }
+      .car { position: absolute; font-size: 30px; animation: drive linear infinite; filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }
+      @keyframes drive { from { transform: translateX(-80px); } to { transform: translateX(1000px); } }
+      .car.c1 { top: 12px; animation-duration: 5s; }
+      .car.c2 { top: 52px; animation-duration: 7s; animation-delay: -2s; }
+      .car.c3 { top: 52px; animation-duration: 4.2s; animation-delay: -1s; }
+      .car.c4 { top: 92px; animation-duration: 6.2s; animation-delay: -3s; }
+      .car.c5 { top: 12px; animation-duration: 8s; animation-delay: -5s; }
+      .sensor { position: absolute; bottom: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--good); animation: ping 2s ease-out infinite; }
+      .sensor.s1 { left: 14%; } .sensor.s2 { left: 44%; animation-delay: .7s; }
+      .sensor.s3 { left: 72%; animation-delay: 1.3s; background: var(--warn); }
+      @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(52,211,153,.55); } 100% { box-shadow: 0 0 0 22px rgba(52,211,153,0); } }
 
-      /* ---------- sections ---------- */
-      section { padding: 46px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-      section h2 { font-size: clamp(24px, 4vw, 34px); margin: 0 0 6px; }
-      section h2 .emoji { margin-right: 10px; }
-      .lead { color: var(--muted); max-width: 720px; font-size: 18px; }
-
-      .analogy {
-        margin-top: 26px;
-        background: linear-gradient(180deg, var(--card), #16203a);
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        padding: 26px 26px;
-        display: grid;
-        grid-template-columns: 64px 1fr;
-        gap: 18px;
-        align-items: center;
-      }
+      /* ===================== analogy ===================== */
+      .analogy { margin-top: 26px; background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: center; }
       .analogy .ico { font-size: 46px; text-align: center; }
+      .one-sentence { margin-top: 18px; font-size: clamp(20px, 3vw, 27px); font-weight: 600; color: #fff; max-width: 820px; }
+      .one-sentence .hl { background: linear-gradient(120deg, rgba(106,147,255,.0), rgba(106,147,255,.28)); padding: 0 6px; border-radius: 6px; }
 
-      /* ---------- pipeline ---------- */
-      .pipe {
-        margin-top: 26px;
-        position: relative;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-      }
-      .stage {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 18px 14px;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-      }
-      .stage .big { font-size: 38px; }
+      /* ===================== pipeline ===================== */
+      .pipe { margin-top: 28px; position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+      .stage { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px 14px; text-align: center; position: relative; z-index: 2; }
+      .stage .big { font-size: 40px; }
       .stage h4 { margin: 8px 0 4px; font-size: 16px; }
       .stage p { margin: 0; font-size: 13px; color: var(--muted); }
-      .flow {
-        position: absolute;
-        top: 50%; left: 2%; right: 2%;
-        height: 4px;
-        background: rgba(91,140,255,0.18);
-        border-radius: 4px;
-        z-index: 1;
-      }
-      .dot {
-        position: absolute; top: -4px; left: 0;
-        width: 12px; height: 12px; border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 12px var(--accent);
-        animation: flow 3.2s linear infinite;
-      }
-      .dot.d2 { animation-delay: 1s;   background: var(--good); box-shadow: 0 0 12px var(--good); }
-      .dot.d3 { animation-delay: 2s;   background: var(--warn); box-shadow: 0 0 12px var(--warn); }
-      @keyframes flow { from { left: 0%; } to { left: 100%; } }
+      .flow { position: absolute; top: 50%; left: 2%; right: 2%; height: 4px; background: rgba(106,147,255,.18); border-radius: 4px; z-index: 1; }
+      .dot { position: absolute; top: -4px; left: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); animation: travel 3.4s linear infinite; }
+      .dot.d2 { animation-delay: 1.1s; background: var(--good); box-shadow: 0 0 12px var(--good); }
+      .dot.d3 { animation-delay: 2.2s; background: var(--warn); box-shadow: 0 0 12px var(--warn); }
+      @keyframes travel { from { left: 0%; } to { left: 100%; } }
 
-      /* ---------- powers grid ---------- */
-      .grid { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-      .power {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 20px;
-        transition: transform .2s ease, border-color .2s ease;
-      }
-      .power:hover { transform: translateY(-4px); border-color: var(--accent); }
-      .power .ico { font-size: 34px; }
-      .power h3 { margin: 10px 0 6px; font-size: 18px; }
-      .power p { margin: 0; color: var(--muted); font-size: 14.5px; }
+      /* ===================== cards ===================== */
+      .grid { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; break-inside: avoid; }
+      .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 16px 36px rgba(0,0,0,.35); }
+      .card .ico { font-size: 34px; }
+      .card h3 { margin: 10px 0 6px; font-size: 18px; }
+      .card p { margin: 0 0 10px; color: var(--muted); font-size: 14.5px; }
+      .coder { font-size: 12.5px; color: #bcd0ff; background: rgba(106,147,255,.1); border-left: 3px solid var(--accent); border-radius: 6px; padding: 8px 10px; }
+      .coder b { color: #fff; }
 
-      /* ---------- how the code works ---------- */
-      .codecard {
-        margin-top: 18px;
-        background: linear-gradient(180deg, #16203a, #121a30);
-        border: 1px solid var(--line);
-        border-left: 4px solid var(--accent);
-        border-radius: 14px;
-        padding: 18px 20px;
-      }
-      .codecard h3 { margin: 0 0 6px; font-size: 17px; }
-      .codecard p { margin: 0; color: var(--muted); font-size: 15px; }
-      .codecard .tag { display:inline-block; font-size:12px; color:var(--accent); margin-top:8px; }
+      /* ===================== code block ===================== */
+      .code { margin-top: 22px; background: #0c1226; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+      .code .bar { background: #0a0f20; padding: 10px 14px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--line); }
+      .code .bar .dotw { display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+      pre { margin: 0; padding: 18px 16px; font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 13.5px; line-height: 1.7; overflow-x: auto; }
+      .kw { color: #ff9ecb; } .fn { color: #7ee3ff; } .str { color: #b6f09c; } .num { color: #ffd479; } .cm { color: #6b7aa3; font-style: italic; }
+      .ann { color: var(--muted); }
+      .annlist { margin-top: 14px; display: grid; gap: 8px; }
+      .annlist div { font-size: 14px; color: var(--muted); }
+      .annlist b { color: var(--ink); }
 
-      .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-      .chip { background: rgba(91,140,255,.1); border:1px solid rgba(91,140,255,.3); color:#cdd9ff; padding:6px 12px; border-radius:999px; font-size:13px; }
+      /* ===================== dictionary ===================== */
+      .dict { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+      .term { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; break-inside: avoid; }
+      .term .w { font-weight: 700; color: #fff; }
+      .term .d { color: var(--muted); font-size: 14px; }
 
-      /* ---------- traffic light demo ---------- */
-      .tl-demo { margin-top: 24px; display:flex; gap:24px; align-items:center; flex-wrap:wrap; }
-      .tlight { width: 60px; padding: 10px; border-radius: 14px; background:#0c1019; border:1px solid var(--line); display:flex; flex-direction:column; gap:10px; align-items:center; }
-      .bulb { width: 34px; height:34px; border-radius:50%; background:#222b40; }
-      .bulb.r { animation: r 6s infinite; }
-      .bulb.y { animation: y 6s infinite; }
-      .bulb.g { animation: g 6s infinite; }
-      @keyframes r { 0%,40%{background:var(--bad);box-shadow:0 0 18px var(--bad);} 41%,100%{background:#3a1620;} }
-      @keyframes y { 45%,55%{background:var(--warn);box-shadow:0 0 18px var(--warn);} 0%,44%,56%,100%{background:#3a3216;} }
-      @keyframes g { 56%,98%{background:var(--good);box-shadow:0 0 18px var(--good);} 0%,55%,99%,100%{background:#163a2a;} }
+      /* ===================== stats ===================== */
+      .stats { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+      .stat { background: linear-gradient(180deg, var(--card2), var(--card)); border: 1px solid var(--line); border-radius: 16px; padding: 22px; text-align: center; break-inside: avoid; }
+      .stat .n { font-size: clamp(30px, 5vw, 44px); font-weight: 800; background: linear-gradient(90deg, #fff, #8fb0ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .stat .l { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
 
-      footer { padding: 50px 0 70px; text-align: center; color: var(--muted); }
-      .cta {
-        display:inline-block; margin-top:8px; padding: 12px 22px; border-radius: 12px;
-        background: var(--accent); color:#fff; text-decoration:none; font-weight:600;
-      }
+      .note { margin-top: 22px; background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; padding: 16px 18px; color: #f4e3b8; font-size: 14.5px; }
+
+      footer { padding: 56px 0 80px; text-align: center; color: var(--muted); }
+      .cta { display: inline-block; margin-top: 10px; padding: 12px 22px; border-radius: 12px; background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff; text-decoration: none; font-weight: 600; }
+
       @media (max-width: 720px) {
         .pipe { grid-template-columns: 1fr 1fr; }
         .analogy { grid-template-columns: 1fr; text-align: center; }
       }
+
+      /* ===================== PRINT (PDF) =====================
+         Neutralize GPU-composited effects (gradient-clipped text,
+         drop-shadow filters, multi-layer gradients) so the headless-Chrome
+         print rasterizer never fails, while keeping colors. */
+      @media print {
+        * { animation: none !important; transition: none !important; filter: none !important; }
+        html, body {
+          background: #0b1020 !important;
+          -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        }
+        .reveal { opacity: 1 !important; transform: none !important; }
+        header { padding: 40px 0 26px; background: #0e1530 !important; }
+        section { padding: 26px 0; page-break-inside: auto; }
+        .card, .term, .stat, .analogy, .code { break-inside: avoid; page-break-inside: avoid; }
+        .scrollcue, .float { display: none !important; }
+        /* gradient-clipped text → solid, so paint-for-print doesn't choke */
+        h1, .stat .n {
+          background: none !important;
+          -webkit-text-fill-color: #eaf0ff !important;
+          color: #eaf0ff !important;
+        }
+        .road { background: #1b2440 !important; }
+      }
     </style>
   </head>
   <body>
+    <!-- ====================== 1. HERO ====================== -->
     <header>
+      <span class="float f1">🚗</span><span class="float f2">📡</span>
+      <span class="float f3">🧠</span><span class="float f4">🚦</span>
       <div class="wrap">
         <span class="badge">A friendly tour · no tech knowledge needed</span>
         <h1>Smart City Traffic Platform 🚦</h1>
         <p class="tag">
-          Imagine a brain for a whole city's roads — one that watches traffic,
-          predicts jams before they happen, and re-times traffic lights to keep
-          everyone moving. That's what this project is. Let's look inside! 👇
+          A "brain" for a whole city's roads — it watches traffic, predicts jams
+          before they happen, and re-times traffic lights so everyone moves
+          better. Let's look inside, no jargon. 👇
         </p>
-
         <div class="road" aria-hidden="true">
-          <div class="lane-line l1"></div>
-          <div class="lane-line l2"></div>
-          <span class="car c1">🚗</span>
-          <span class="car c2">🚙</span>
-          <span class="car c3">🏎️</span>
-          <span class="car c4">🚕</span>
-          <span class="car c5">🚌</span>
-          <span class="sensor s1" title="a road sensor reporting traffic"></span>
-          <span class="sensor s2"></span>
-          <span class="sensor s3" title="a busy spot"></span>
+          <div class="lane a"></div><div class="lane b"></div>
+          <span class="car c1">🚗</span><span class="car c2">🚙</span>
+          <span class="car c3">🏎️</span><span class="car c4">🚕</span><span class="car c5">🚌</span>
+          <span class="sensor s1"></span><span class="sensor s2"></span><span class="sensor s3"></span>
         </div>
-        <p class="muted" style="font-size:14px;margin-top:10px">
-          ☝️ The green/yellow dots are <b>sensors</b> in the road, "pinging" the
-          system with how busy each spot is — right now.
-        </p>
+        <div class="scrollcue">scroll to explore<span class="arrow">↓</span></div>
       </div>
     </header>
 
+    <!-- ====================== 2. ONE SENTENCE ====================== -->
     <section>
-      <div class="wrap">
-        <h2><span class="emoji">🧠</span>What is it, really?</h2>
-        <p class="lead">
-          Think of a city's roads as a body, and this project as its
-          <b>nervous system</b>. Sensors and cameras are the senses, a fast
-          "spinal cord" carries the signals, and a brain decides what to do.
+      <div class="wrap reveal">
+        <h2><span class="e">💡</span>In one sentence</h2>
+        <p class="one-sentence">
+          It turns a <span class="hl">live stream of traffic measurements</span>
+          into <span class="hl">predictions, alerts, and smarter traffic-light
+          timings</span> — shown on a real-time map, a phone app, and a talking
+          assistant.
         </p>
+      </div>
+    </section>
 
+    <!-- ====================== 3. ANALOGY ====================== -->
+    <section>
+      <div class="wrap reveal">
+        <h2><span class="e">🧠</span>Think of it like…</h2>
+        <p class="lead">…the <b>nervous system</b> of a city.</p>
         <div class="analogy">
           <div class="ico">🏙️</div>
           <div>
-            <b>The everyday version:</b> You're driving home. A truck breaks down
-            two streets ahead. Normally you'd discover the jam by sitting in it.
-            This system <i>notices the slowdown within seconds</i>, predicts how
-            far the jam will spread, warns drivers, suggests a better route, and
-            even gives nearby traffic lights more green time to drain the queue.
+            Sensors and cameras are the <b>senses</b> (they feel how busy each
+            road is). A super-fast "spinal cord" carries those signals. A
+            <b>brain</b> decides what's happening and what to do — then warns
+            drivers, suggests detours, and gives busy directions more green
+            light. All in <b>seconds</b>, not after you're already stuck. 🚙💨
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ====================== 4. JOURNEY (pipeline) ====================== -->
     <section>
-      <div class="wrap">
-        <h2><span class="emoji">🔄</span>How information flows</h2>
-        <p class="lead">Data takes a little journey, like a parcel on a conveyor belt:</p>
-
+      <div class="wrap reveal">
+        <h2><span class="e">🔄</span>The journey of a traffic reading</h2>
+        <p class="lead">Follow one little measurement on its trip through the system:</p>
         <div class="pipe">
-          <div class="flow">
-            <span class="dot"></span><span class="dot d2"></span><span class="dot d3"></span>
-          </div>
-          <div class="stage">
-            <div class="big">📡</div>
-            <h4>1. Sense</h4>
-            <p>Sensors &amp; cameras measure how many cars, how fast, how full.</p>
-          </div>
-          <div class="stage">
-            <div class="big">🚚</div>
-            <h4>2. Deliver</h4>
-            <p>A super-fast "conveyor belt" rushes every measurement onward.</p>
-          </div>
-          <div class="stage">
-            <div class="big">🧠</div>
-            <h4>3. Think</h4>
-            <p>Smart models spot patterns, predict jams, and find incidents.</p>
-          </div>
-          <div class="stage">
-            <div class="big">📱</div>
-            <h4>4. Show &amp; Act</h4>
-            <p>A live map, an app, and smarter traffic lights — in real time.</p>
-          </div>
+          <div class="flow"><span class="dot"></span><span class="dot d2"></span><span class="dot d3"></span></div>
+          <div class="stage"><div class="big">📡</div><h4>1. Sensed</h4><p>A road sensor notes "12 cars, 30 km/h, a bit full."</p></div>
+          <div class="stage"><div class="big">🚚</div><h4>2. Delivered</h4><p>It rides a fast "conveyor belt" everyone can read.</p></div>
+          <div class="stage"><div class="big">🧠</div><h4>3. Understood</h4><p>Models predict the next jam &amp; spot incidents.</p></div>
+          <div class="stage"><div class="big">📱</div><h4>4. Acted on</h4><p>Map updates, drivers get routes, lights re-time.</p></div>
         </div>
-        <p class="muted" style="font-size:14px;margin-top:14px">
-          The glowing dots above are little packets of traffic data flowing left
-          to right — exactly how it moves through the real system. 🌊
-        </p>
+        <p class="muted" style="font-size:14px;margin-top:14px">The glowing dots are little packets of data flowing left to right — exactly how it really moves. 🌊</p>
       </div>
     </section>
 
+    <!-- ====================== 5. MAIN PARTS ====================== -->
     <section>
-      <div class="wrap">
-        <h2><span class="emoji">✨</span>Its six superpowers</h2>
+      <div class="wrap reveal">
+        <h2><span class="e">🧩</span>The main parts (in plain English)</h2>
+        <p class="lead">Hover a card to lift it. Each has a "Coder words" note that decodes the real term.</p>
         <div class="grid">
-          <div class="power">
-            <div class="ico">🔮</div>
-            <h3>Predicts the future</h3>
-            <p>It learns from past traffic to forecast the next 15–60 minutes, so
-              jams can be avoided <i>before</i> they form.</p>
+          <div class="card">
+            <div class="ico">📡</div><h3>The data firehose</h3>
+            <p>Thousands of sensor + camera readings a second, never dropped, readable by every part.</p>
+            <div class="coder"><b>Coder words:</b> "Kafka" — an event stream, like a conveyor belt of messages.</div>
           </div>
-          <div class="power">
-            <div class="ico">👁️</div>
-            <h3>Sees with cameras</h3>
-            <p>It watches camera feeds, counts vehicles, and flags trouble — a
-              stopped car, someone going the wrong way.</p>
+          <div class="card">
+            <div class="ico">👁️</div><h3>The camera watcher</h3>
+            <p>Looks at video, counts cars by type, and flags a stopped car or a wrong-way driver.</p>
+            <div class="coder"><b>Coder words:</b> "computer vision / YOLO" — software that finds objects in images.</div>
           </div>
-          <div class="power">
-            <div class="ico">🚦</div>
-            <h3>Re-times traffic lights</h3>
-            <p>An AI practised in a traffic simulator millions of times, learning
-              light timings that cut waiting and pollution.</p>
+          <div class="card">
+            <div class="ico">🔮</div><h3>The forecaster</h3>
+            <p>Learned from months of past traffic to predict the next 15–60 minutes per road.</p>
+            <div class="coder"><b>Coder words:</b> "machine learning model" — it finds patterns instead of fixed rules.</div>
           </div>
-          <div class="power">
-            <div class="ico">🗺️</div>
-            <h3>A living 3-D map</h3>
-            <p>A digital twin of the city in 3-D, with little cars moving exactly
-              as densely as the real traffic right now.</p>
+          <div class="card">
+            <div class="ico">🚦</div><h3>The light optimizer</h3>
+            <p>Practised in a traffic video-game millions of times to learn timings that cut waiting.</p>
+            <div class="coder"><b>Coder words:</b> "reinforcement learning" — learning by trial, error, and reward.</div>
           </div>
-          <div class="power">
-            <div class="ico">💬</div>
-            <h3>Talks with you</h3>
-            <p>Ask it out loud or by text — "Where's the traffic worst?" — and it
-              answers, in English, Hebrew, or Arabic.</p>
+          <div class="card">
+            <div class="ico">🗺️</div><h3>The living map &amp; 3-D twin</h3>
+            <p>A website showing every road's colour live, plus a 3-D model of the city with moving cars.</p>
+            <div class="coder"><b>Coder words:</b> "frontend + digital twin" — the screen you see, mirroring reality.</div>
           </div>
-          <div class="power">
-            <div class="ico">🔒</div>
-            <h3>Respects privacy</h3>
-            <p>Neighbourhoods can train the AI <i>together</i> without ever sharing
-              their raw data with each other.</p>
+          <div class="card">
+            <div class="ico">💬</div><h3>The assistant</h3>
+            <p>Ask by voice or text — "Where's it worst?" — and it answers in English, Hebrew, or Arabic.</p>
+            <div class="coder"><b>Coder words:</b> "LLM assistant (Claude) with tools" — an AI that can look things up for you.</div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="wrap">
-        <h2><span class="emoji">🚥</span>Watch a light "think"</h2>
-        <p class="lead">A normal light follows a fixed timer. A smart one changes
-          its timing based on which direction has the longer queue.</p>
-        <div class="tl-demo">
-          <div class="tlight" aria-hidden="true">
-            <span class="bulb r"></span>
-            <span class="bulb y"></span>
-            <span class="bulb g"></span>
+          <div class="card">
+            <div class="ico">🚪</div><h3>The front desk</h3>
+            <p>One secure door for the website &amp; app — checks who you are and what you may see.</p>
+            <div class="coder"><b>Coder words:</b> "API gateway + auth" — the reception desk that checks IDs.</div>
           </div>
-          <div style="max-width:560px">
-            <p class="muted" style="margin:0">
-              The project trains this decision-maker inside a <b>simulation</b> —
-              a video-game-like model of an intersection — running thousands of
-              rush hours safely on a computer until it gets really good. Only then
-              would its suggestions ever reach a real street. 🎮➡️🛣️
-            </p>
+          <div class="card">
+            <div class="ico">🔒</div><h3>The privacy trick</h3>
+            <p>Neighbourhoods improve the shared AI together — without ever handing over their raw data.</p>
+            <div class="coder"><b>Coder words:</b> "federated learning" — train together, keep your data at home.</div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ====================== 6. ACTUAL CODE ====================== -->
     <section>
-      <div class="wrap">
-        <h2><span class="emoji">🛠️</span>What's under the hood (in plain words)</h2>
-        <p class="lead">A peek at the "coding" ideas — explained with everyday
-          comparisons. No jargon required.</p>
-
-        <div class="codecard">
-          <h3>🧩 Many small programs, not one giant one</h3>
-          <p>Instead of a single huge app, the system is a <b>team of small
-            specialists</b> — one only handles cameras, one only predicts, one only
-            talks to you. If one takes a break, the others keep working. Engineers
-            call this <i>microservices</i>.</p>
-          <span class="tag">a.k.a. microservices</span>
+      <div class="wrap reveal">
+        <h2><span class="e">👩‍💻</span>Show me some actual code!</h2>
+        <p class="lead">Here's a tiny made-up example — the kind of thing that decides a road's colour. Read the friendly notes below it.</p>
+        <div class="code">
+          <div class="bar">
+            <span class="dotw" style="background:#fb5b6d"></span><span class="dotw" style="background:#fbbf24"></span><span class="dotw" style="background:#34d399"></span>
+            traffic_colour.py
+          </div>
+<pre><span class="cm"># Decide the colour for a road, given its current speed.</span>
+<span class="kw">def</span> <span class="fn">road_colour</span>(speed_kmh, speed_limit):
+    ratio = speed_kmh / speed_limit          <span class="cm"># how free-flowing is it?</span>
+    <span class="kw">if</span> ratio &gt; <span class="num">0.7</span>:
+        <span class="kw">return</span> <span class="str">"green"</span>                   <span class="cm"># moving nicely 🟢</span>
+    <span class="kw">elif</span> ratio &gt; <span class="num">0.4</span>:
+        <span class="kw">return</span> <span class="str">"orange"</span>                  <span class="cm"># getting busy 🟠</span>
+    <span class="kw">return</span> <span class="str">"red"</span>                          <span class="cm"># jammed 🔴</span>
+</pre>
         </div>
-
-        <div class="codecard">
-          <h3>🚚 The conveyor belt between them</h3>
-          <p>The specialists don't shout across the room; they drop messages onto a
-            shared <b>conveyor belt</b> that never loses a parcel and can be read by
-            anyone who needs it. This is how thousands of updates a second stay
-            organised.</p>
-          <span class="tag">a.k.a. Kafka, an event stream</span>
+        <div class="annlist">
+          <div><b>The grey line with #</b> is a <b>comment</b> — a note for humans; the computer ignores it.</div>
+          <div><b><span class="fn">def road_colour(...)</span></b> defines a <b>function</b>: a reusable mini-machine you give inputs and it gives an answer.</div>
+          <div><b><span class="kw">if</span> / <span class="kw">elif</span></b> is a <b>decision</b>: "if this is true, do that; otherwise check the next thing."</div>
+          <div><b><span class="kw">return</span></b> hands the answer back — here, the word <span class="str">"green"</span>, <span class="str">"orange"</span>, or <span class="str">"red"</span>.</div>
         </div>
+      </div>
+    </section>
 
-        <div class="codecard">
-          <h3>🧠 Learning from examples</h3>
-          <p>The "predict the future" part isn't hand-written rules — it's shown
-            <b>lots of past traffic</b> and figures out the patterns itself, the way
-            you learn that Sunday mornings are quiet. That's <i>machine learning</i>.
-            And it can <b>explain</b> which clues led to each guess.</p>
-          <span class="tag">a.k.a. machine learning + explainability</span>
+    <!-- ====================== 7. DICTIONARY ====================== -->
+    <section>
+      <div class="wrap reveal">
+        <h2><span class="e">📖</span>Mini-dictionary (6 coder words)</h2>
+        <div class="dict">
+          <div class="term"><span class="w">Service</span> — <span class="d">one worker that does one job well (e.g. only handles cameras).</span></div>
+          <div class="term"><span class="w">API</span> — <span class="d">a menu of requests one program offers to others. "I'll take a #3, please."</span></div>
+          <div class="term"><span class="w">Database</span> — <span class="d">a giant, well-organised filing cabinet the software writes to and reads from.</span></div>
+          <div class="term"><span class="w">Container</span> — <span class="d">a lunchbox holding a program plus everything it needs, so it runs anywhere.</span></div>
+          <div class="term"><span class="w">Cloud</span> — <span class="d">someone else's powerful computers you rent, instead of buying your own.</span></div>
+          <div class="term"><span class="w">Real-time</span> — <span class="d">happening now-ish — updates arrive in seconds, not tomorrow.</span></div>
         </div>
+      </div>
+    </section>
 
-        <div class="codecard">
-          <h3>🎮 Learning by trial and error</h3>
-          <p>The traffic-light brain learns like a gamer chasing a high score: try
-            a timing, see if cars waited less, keep what worked, repeat — millions
-            of times. The "score" is <b>less waiting and less pollution</b>.</p>
-          <span class="tag">a.k.a. reinforcement learning</span>
+    <!-- ====================== 8. STATS ====================== -->
+    <section>
+      <div class="wrap reveal">
+        <h2><span class="e">📊</span>By the numbers</h2>
+        <p class="lead">The size of the build (the numbers count up when they scroll into view):</p>
+        <div class="stats">
+          <div class="stat"><div class="n" data-count="14">14</div><div class="l">independent services</div></div>
+          <div class="stat"><div class="n" data-count="3">3</div><div class="l">programming languages</div></div>
+          <div class="stat"><div class="n" data-count="3">3</div><div class="l">languages on screen (EN · עברית · العربية)</div></div>
+          <div class="stat"><div class="n" data-count="49">49</div><div class="l">simulated road segments</div></div>
+          <div class="stat"><div class="n" data-count="5">5</div><div class="l">AI / ML techniques</div></div>
         </div>
+      </div>
+    </section>
 
-        <div class="codecard">
-          <h3>🌐 Spoken in several "languages" of code</h3>
-          <p>Different jobs use different programming languages — like using a
-            screwdriver for screws and a hammer for nails. Here, <b>Python</b> does
-            the AI, <b>Java</b> handles the firehose of sensor data, and
-            <b>TypeScript</b> builds the website and app. They all cooperate.</p>
-          <span class="tag">Python · Java · TypeScript</span>
-        </div>
-
-        <div class="chips">
-          <span class="chip">📡 Live sensors &amp; cameras (simulated)</span>
-          <span class="chip">🧠 AI predictions</span>
-          <span class="chip">🚦 Smart traffic lights</span>
-          <span class="chip">🗺️ 3-D digital twin</span>
-          <span class="chip">💬 Voice &amp; chat assistant</span>
-          <span class="chip">📱 Citizen mobile app</span>
-          <span class="chip">🌍 English · עברית · العربية</span>
-          <span class="chip">🔒 Privacy-preserving learning</span>
-        </div>
-
-        <p class="muted" style="margin-top:22px; font-size:14px">
-          One honest note: the cars and cameras here are <b>realistic
-          simulations</b>, not a real city's live feed — so the whole system can be
-          shown safely on a laptop. The clever engineering is the system itself. ✅
+    <!-- ====================== 8.5 PREVIEW ====================== -->
+    <section>
+      <div class="wrap reveal">
+        <h2><span class="e">🖼️</span>See it (preview)</h2>
+        <p class="lead">
+          A quick tour of the key screens. These are
+          <b>UI previews (mockups)</b> — polished designs of the interface, not
+          photos of the running app (see the honest note below).
         </p>
+        <div style="margin-top:20px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#0c1226">
+          <img src="docs/images/product-tour.gif" alt="Animated product tour of the dashboard, 3D twin, assistant, and mobile app (UI mockups)" style="width:100%;display:block" />
+        </div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card" style="padding:0;overflow:hidden">
+            <img src="docs/images/mockup_01_dashboard.png" alt="Dashboard mockup" style="width:100%;display:block" />
+          </div>
+          <div class="card" style="padding:0;overflow:hidden">
+            <img src="docs/images/mockup_02_segment.png" alt="Segment drill-down mockup" style="width:100%;display:block" />
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- ====================== 9. HONESTY ====================== -->
+    <section>
+      <div class="wrap reveal">
+        <h2><span class="e">🤝</span>One honest note</h2>
+        <div class="note">
+          The cars, sensors, and cameras here are <b>realistic simulations</b>,
+          not a real city's live feed — so the whole thing runs safely on a
+          laptop for a demo. Any app screenshots shown elsewhere are labelled
+          <b>"UI preview (mockup)"</b> when they're designs rather than photos of
+          the running app. The clever part is the engineering of the system
+          itself. ✅
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== 10. FOOTER ====================== -->
     <footer>
-      <div class="wrap">
+      <div class="wrap reveal">
         <p>Built as a portfolio project by <b>Yousef Hasan Hamda</b>.</p>
-        <p class="muted" style="font-size:14px">
-          Want the technical version? See the project's
-          <a href="README.md">README</a> and
-          <a href="docs/architecture.md">architecture docs</a>.
-        </p>
-        <a class="cta" href="README.md">📖 Read the full story</a>
+        <p class="muted" style="font-size:14px">Want the technical version? It's all in the project's README and architecture docs.</p>
+        <a class="cta" href="README.md">📖 Read the full technical story</a>
       </div>
     </footer>
 
     <script>
-      // A tiny sprinkle of life: gently speed up the hero cars when the page
-      // is clicked, just for fun. (Purely decorative — safe to ignore.)
+      // Fade sections in as they scroll into view.
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
+        { threshold: 0.15 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+      // Count-up for stats. When printing, numbers keep their final value
+      // (pre-filled in the HTML) so a PDF is never blank.
+      const isPrint = window.matchMedia && window.matchMedia("print").matches;
+      const countUp = (el) => {
+        const target = +el.dataset.count;
+        if (isPrint || target <= 0) { el.textContent = target; return; }
+        let n = 0;
+        const step = Math.max(1, Math.round(target / 28));
+        const tick = () => { n = Math.min(target, n + step); el.textContent = n; if (n < target) requestAnimationFrame(tick); };
+        tick();
+      };
+      const statObs = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) { countUp(e.target); statObs.unobserve(e.target); } }),
+        { threshold: 0.6 },
+      );
+      document.querySelectorAll(".stat .n").forEach((el) => statObs.observe(el));
+
+      // Fun: clicking anywhere nudges the hero cars faster.
       document.addEventListener("click", () => {
-        document.querySelectorAll(".car").forEach((car) => {
-          const base = parseFloat(getComputedStyle(car).animationDuration);
-          car.style.animationDuration = Math.max(2, base * 0.8) + "s";
+        document.querySelectorAll(".car").forEach((c) => {
+          const base = parseFloat(getComputedStyle(c).animationDuration);
+          c.style.animationDuration = Math.max(2, base * 0.85) + "s";
         });
       });
     </script>
