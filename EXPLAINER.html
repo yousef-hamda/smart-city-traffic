@@ -93,9 +93,12 @@
       }
       header h1 {
         font-size: clamp(34px, 7vw, 64px); margin: 6px 0 12px; position: relative;
+        animation: beat 3.2s ease-in-out infinite;
+      }
+      /* Gradient is on the text span only — so the title emoji isn't clipped. */
+      header h1 .grad {
         background: linear-gradient(90deg, #fff, #9db8ff 55%, #34d399);
         -webkit-background-clip: text; background-clip: text; color: transparent;
-        animation: beat 3.2s ease-in-out infinite;
       }
       @keyframes beat { 0%,100% { letter-spacing: 0; } 50% { letter-spacing: 0.6px; filter: brightness(1.08); } }
       header p.tag { font-size: clamp(16px, 2.4vw, 21px); color: var(--muted); margin: 0 auto; max-width: 660px; }
@@ -197,7 +200,7 @@
         .card, .term, .stat, .analogy, .code { break-inside: avoid; page-break-inside: avoid; }
         .scrollcue, .float { display: none !important; }
         /* gradient-clipped text → solid, so paint-for-print doesn't choke */
-        h1, .stat .n {
+        h1, h1 .grad, .stat .n {
           background: none !important;
           -webkit-text-fill-color: #eaf0ff !important;
           color: #eaf0ff !important;
@@ -213,7 +216,7 @@
       <span class="float f3">🧠</span><span class="float f4">🚦</span>
       <div class="wrap">
         <span class="badge">A friendly tour · no tech knowledge needed</span>
-        <h1>Smart City Traffic Platform 🚦</h1>
+        <h1><span class="grad">Smart City Traffic Platform</span> 🚦</h1>
         <p class="tag">
           A "brain" for a whole city's roads — it watches traffic, predicts jams
           before they happen, and re-times traffic lights so everyone moves
@@ -380,7 +383,8 @@
           <div class="stat"><div class="n" data-count="3">3</div><div class="l">programming languages</div></div>
           <div class="stat"><div class="n" data-count="3">3</div><div class="l">languages on screen (EN · עברית · العربية)</div></div>
           <div class="stat"><div class="n" data-count="49">49</div><div class="l">simulated road segments</div></div>
-          <div class="stat"><div class="n" data-count="5">5</div><div class="l">AI / ML techniques</div></div>
+          <div class="stat"><div class="n" data-count="6">6</div><div class="l">AI / ML techniques</div></div>
+          <div class="stat"><div class="n" data-count="23">23</div><div class="l">build phases shipped</div></div>
         </div>
       </div>
     </section>
@@ -394,16 +398,27 @@
           <b>UI previews (mockups)</b> — polished designs of the interface, not
           photos of the running app (see the honest note below).
         </p>
-        <div style="margin-top:20px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#0c1226">
-          <img src="docs/images/product-tour.gif" alt="Animated product tour of the dashboard, 3D twin, assistant, and mobile app (UI mockups)" style="width:100%;display:block" />
-        </div>
-        <div class="grid" style="margin-top:16px">
-          <div class="card" style="padding:0;overflow:hidden">
-            <img src="docs/images/mockup_01_dashboard.png" alt="Dashboard mockup" style="width:100%;display:block" />
-          </div>
-          <div class="card" style="padding:0;overflow:hidden">
-            <img src="docs/images/mockup_02_segment.png" alt="Segment drill-down mockup" style="width:100%;display:block" />
-          </div>
+        <figure style="margin:20px 0 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#0c1226;page-break-inside:avoid">
+          <img src="docs/images/product-tour.gif" alt="Animated product tour cycling through the dashboard, 3D twin, AI assistant, and mobile app (UI mockups)" style="width:100%;display:block" />
+          <figcaption style="padding:10px 14px;font-size:13px;color:var(--muted)">▶︎ A 30-second tour — the live dashboard, the 3-D twin, the AI assistant, and the phone app.</figcaption>
+        </figure>
+        <div class="grid" style="margin-top:16px;grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
+          <figure class="card" style="margin:0;padding:0;overflow:hidden">
+            <img src="docs/images/preview_dashboard.png" alt="Live dashboard mockup" style="width:100%;display:block" />
+            <figcaption style="padding:10px 14px;font-size:13px"><b>Live dashboard</b> <span class="muted">— map coloured by traffic, KPI cards, live alerts.</span></figcaption>
+          </figure>
+          <figure class="card" style="margin:0;padding:0;overflow:hidden">
+            <img src="docs/images/preview_segment.png" alt="Segment drill-down with prediction and SHAP mockup" style="width:100%;display:block" />
+            <figcaption style="padding:10px 14px;font-size:13px"><b>Road drill-down</b> <span class="muted">— forecast + the "why" behind it.</span></figcaption>
+          </figure>
+          <figure class="card" style="margin:0;padding:0;overflow:hidden">
+            <img src="docs/images/preview_twin.png" alt="3D digital twin mockup" style="width:100%;display:block" />
+            <figcaption style="padding:10px 14px;font-size:13px"><b>3-D digital twin</b> <span class="muted">— the city in 3-D, cars moving with live density.</span></figcaption>
+          </figure>
+          <figure class="card" style="margin:0;padding:0;overflow:hidden">
+            <img src="docs/images/preview_assistant.png" alt="AI assistant chat mockup" style="width:100%;display:block" />
+            <figcaption style="padding:10px 14px;font-size:13px"><b>AI assistant</b> <span class="muted">— ask by voice or text, in EN · עברית · العربية.</span></figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -428,7 +443,7 @@
       <div class="wrap reveal">
         <p>Built as a portfolio project by <b>Yousef Hasan Hamda</b>.</p>
         <p class="muted" style="font-size:14px">Want the technical version? It's all in the project's README and architecture docs.</p>
-        <a class="cta" href="README.md">📖 Read the full technical story</a>
+        <a class="cta" href="https://github.com/yousef-hamda/smart-city-traffic#readme" target="_blank" rel="noopener">📖 Read the full technical story on GitHub</a>
       </div>
     </footer>
 
