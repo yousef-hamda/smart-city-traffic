@@ -1,0 +1,71 @@
+# Release: build + push images to GHCR, attach SBOMs, then bump the image tag
+# in the ArgoCD-watched path so GitOps deploys the new version.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - sensor-ingestion
+          - vision-service
+          - ml-prediction
+          - rl-optimizer
+          - ai-assistant
+          - voice-gateway
+          - api-gateway
+          - realtime-gateway
+          - frontend
+          - developer-portal
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build & push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/${{ matrix.service }}.Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.service }}:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.service }}:${{ github.ref_name }}
+          format: spdx-json
+
+  bump-gitops:
+    needs: images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump image tag for ArgoCD
+        run: |
+          sed -i "s/imageTag: .*/imageTag: \"${GITHUB_REF_NAME#v}\"/" infra/helm/smart-city/values.yaml
+      - name: Commit the bump
+        run: |
+          git config user.name "release-bot"
+          git config user.email "release-bot@users.noreply.github.com"
+          git commit -am "chore(release): bump image tag to ${GITHUB_REF_NAME}" || echo "no change"
+          git push || echo "push skipped (configure a deploy key/PAT)"
