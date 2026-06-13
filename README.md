@@ -47,6 +47,16 @@ learning against SUMO, and serves it all through a real-time geospatial
 dashboard, a citizen mobile app, and a voice-and-text AI assistant — in
 English, Hebrew (RTL), and Arabic (RTL).
 
+## Architecture
+
+![Architecture](docs/images/architecture.png)
+
+Fourteen independently-deployable services across four ecosystems, integrated
+over Kafka (events), gRPC (hot internal paths), REST + GraphQL Federation
+(public edge), and Socket.IO (last-mile). Full write-up in
+[`docs/architecture.md`](docs/architecture.md); the big design choices are
+recorded as [ADRs](docs/adr/).
+
 ## Quick start
 
 ```bash
@@ -108,10 +118,75 @@ to see it properly:
 > The explainer files are committed locally and need a `git push` before they
 > appear on GitHub or Pages.
 
+## Skills demonstrated
+
+- **Full-stack web** — Next.js, React, TypeScript, NestJS, REST + GraphQL
+  Federation, Tailwind, React Three Fiber / three.js for the 3D twin
+- **Mobile** — React Native, Expo, push notifications, offline-tolerant design,
+  multilingual UI
+- **Microservices** — Java/Spring Boot, Python/FastAPI, Node/NestJS — polyglot
+  orchestration, 14 independently-deployable services
+- **Inter-service comms** — REST + gRPC + GraphQL Federation + Kafka + Redis
+  pub/sub + WebSockets, each where it fits ([ADR 0003](docs/adr/0003-grpc-vs-rest.md))
+- **Machine Learning** — LSTM + Transformer time-series, XGBoost, Isolation
+  Forest; MLflow tracking; Feast feature store; SHAP explainability; Optuna HPO
+- **Computer Vision** — YOLOv8 detection, ByteTrack multi-object tracking,
+  OpenCV pipeline, incident detection
+- **Reinforcement Learning** — DQN + PPO (Stable-Baselines3) on a custom
+  Gymnasium env, benchmarked honestly against fixed-time / Webster / max-pressure
+  ([docs/rl.md](docs/rl.md))
+- **Federated Learning** — Flower with secure aggregation across simulated
+  sensor clusters, vs centralized + local-only baselines
+- **Generative AI** — Claude tool-calling + RAG (ChromaDB) + Whisper STT/TTS
+  voice interface
+- **Stream processing** — Kafka, Flink (PyFlink) windowed aggregations + CEP
+  for corroborated incident detection
+- **Data engineering** — TimescaleDB hypertables + PostGIS + continuous
+  aggregates; MongoDB archival; Neo4j knowledge graph
+- **Modern data stack** — MinIO + Apache Iceberg + Trino + dbt + Superset
+- **Cloud-native** — Docker, Kubernetes, Helm, Istio (mTLS + canary), ArgoCD
+  GitOps, Argo Rollouts canary with Prometheus analysis
+- **DevOps & SRE** — GitHub Actions CI/CD, Trivy + Syft SBOM, Terraform AWS
+  skeleton, OpenTelemetry tracing across services, Grafana + Loki + Tempo +
+  Prometheus, SLOs + burn-rate alerts
+- **Chaos engineering** — Litmus experiments + a game-day runbook
+- **Security** — JWT + rotating refresh, RBAC, Vault, per-key rate limiting,
+  input validation everywhere ([docs/security.md](docs/security.md))
+- **Testing** — unit, Testcontainers integration, Pact contracts, Playwright +
+  Maestro E2E, k6 load, coverage gates ([docs/testing.md](docs/testing.md))
+- **i18n & accessibility** — English / Hebrew RTL / Arabic RTL across web and
+  mobile, WCAG AA
+
+## Tech stack
+
+- **Frontend/Mobile** — Next.js 14, React 18, TypeScript, Tailwind, R3F/three,
+  Leaflet, Recharts, TanStack Query, Zustand, next-intl; React Native (Expo)
+- **Backend** — NestJS, Spring Boot 3 (Java 21), FastAPI (Python 3.11),
+  Node/Socket.IO
+- **ML/RL/CV** — PyTorch + Lightning, XGBoost, scikit-learn, SHAP, Optuna,
+  MLflow, Feast, Ultralytics YOLOv8, Stable-Baselines3, Gymnasium, Flower
+- **Data** — Kafka, Flink, TimescaleDB + PostGIS, Redis, MongoDB, Neo4j,
+  MinIO + Iceberg, Trino, dbt, Superset
+- **Platform** — Docker, Kubernetes, Helm, Istio, ArgoCD, Argo Rollouts,
+  Prometheus/Grafana/Loki/Tempo, OpenTelemetry, Vault, Terraform, Litmus
+
+## Roadmap
+
+- Multi-tenancy (`tenant_id` = city) — schema designed to add it additively.
+- Real RTSP/video into the vision service (YOLO weights) alongside the
+  synthetic feed.
+- Coordinated multi-intersection RL (green-wave offsets) where RL should clearly
+  beat max-pressure.
+- Push the coverage gate onto every service; live Pact Broker verification.
+
 ## Documentation
 
 - [Architecture](docs/architecture.md) · [ADRs](docs/adr/) ·
-  [ML](docs/ml.md) · [RL](docs/rl.md)
+  [ML](docs/ml.md) · [RL](docs/rl.md) · [Data lake](docs/data-lake.md) ·
+  [Deployment](docs/deployment.md) · [Security](docs/security.md) ·
+  [Testing](docs/testing.md)
+- SRE: [SLOs](docs/runbooks/slos.md) · [on-call](docs/runbooks/on-call.md) ·
+  [chaos game-day](docs/chaos-game-day.md)
 - Plain-language tour: [EXPLAINER.html](EXPLAINER.html) ·
   [standalone](EXPLAINER-standalone.html) · [PDF](EXPLAINER.pdf)
 - Per-service READMEs under `apps/<service>/README.md`
