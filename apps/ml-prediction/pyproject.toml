@@ -19,16 +19,32 @@ dependencies = [
     "opentelemetry-sdk>=1.25",
     "opentelemetry-exporter-otlp-proto-grpc>=1.25",
     "opentelemetry-instrumentation-fastapi>=0.46b0",
+    "xgboost>=2.1",
+    "scikit-learn>=1.5",
+    "torch>=2.3",
+    "lightning>=2.3",
+    "shap>=0.45",
+    "optuna>=3.6",
+    "mlflow>=2.13",
+    "feast[local]>=0.38",
+    "grpcio>=1.64",
+    "grpcio-tools>=1.64",
+    "protobuf>=5.27",
+    "joblib>=1.4",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "pyarrow>=16.0",
+    "httpx>=0.27",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
-    "httpx>=0.27",
     "ruff>=0.6",
     "black>=24.0",
     "mypy>=1.11",
+    "types-protobuf>=5.27",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -37,9 +53,15 @@ packages = ["src/ml_prediction"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+# Generated gRPC stubs are not hand-written; never lint them.
+extend-exclude = ["src/ml_prediction/proto"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "B", "SIM"]
+# N803/N806/N812: `X` for feature matrices is standard ML convention.
+# N802: gRPC servicer methods (Predict, DetectAnomaly, …) must match the
+#       PascalCase names generated from the .proto service.
+ignore = ["N999", "B008", "N803", "N806", "N812", "N802"]
 
 [tool.black]
 line-length = 100
@@ -49,6 +71,44 @@ strict = true
 mypy_path = "src"
 plugins = ["pydantic.mypy"]
 
+[[tool.mypy.overrides]]
+module = [
+    "xgboost",
+    "xgboost.*",
+    "sklearn.*",
+    "shap",
+    "shap.*",
+    "optuna",
+    "optuna.*",
+    "mlflow",
+    "mlflow.*",
+    "feast",
+    "feast.*",
+    "lightning",
+    "lightning.*",
+    "torch",
+    "torch.*",
+    "joblib",
+    "grpc",
+    "grpc.*",
+    "pandas",
+    "pandas.*",
+    "simulator",
+    "simulator.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["ml_prediction.proto.*"]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+# grpc_server interops with the untyped generated stubs (pb2 message classes
+# and the add_*_to_server helper); those specific interop errors are expected.
+module = ["ml_prediction.grpc_server"]
+disable_error_code = ["attr-defined", "no-untyped-call"]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 pythonpath = ["src"]
+markers = ["slow: marks tests as slow (deselect with '-m not slow')"]
