@@ -10,6 +10,12 @@ aspiration — sections appear as the phases that implement them land. The full
 build plan lives in the commit history (one conventional-commit series per
 phase) and [`docs/architecture.md`](docs/architecture.md).
 
+## New here? Start with the fun tour 🎉
+
+Not a developer? Open [**`EXPLAINER.html`**](EXPLAINER.html) in any web browser
+for an animated, plain-language tour of what this project does and how it works
+— no technical knowledge needed.
+
 ## What it is
 
 A multi-service platform that ingests live traffic telemetry (from honest,
@@ -30,11 +36,11 @@ make seed       # seed road segments, sensors, cameras, Neo4j graph
 make sim        # start the sensor simulator
 ```
 
-| Surface | URL |
-|---|---|
-| Dashboard | http://localhost:3000 |
+| Surface               | URL                        |
+| --------------------- | -------------------------- |
+| Dashboard             | http://localhost:3000      |
 | API gateway (Swagger) | http://localhost:8080/docs |
-| Developer portal | http://localhost:3001 |
+| Developer portal      | http://localhost:3001      |
 
 ## Repository layout
 
