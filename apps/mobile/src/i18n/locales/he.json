@@ -1,0 +1,79 @@
+{
+  "common": {
+    "appName": "תנועה בעיר החכמה",
+    "loading": "טוען...",
+    "error": "משהו השתבש",
+    "retry": "נסה שוב",
+    "language": "שפה",
+    "save": "שמור",
+    "cancel": "ביטול",
+    "submit": "שלח",
+    "back": "חזור"
+  },
+  "auth": {
+    "email": "דואר אלקטרוני",
+    "password": "סיסמה",
+    "name": "שם מלא",
+    "login": "התחברות",
+    "register": "הרשמה",
+    "logout": "התנתקות",
+    "loginTitle": "ברוך שובך",
+    "registerTitle": "יצירת חשבון",
+    "noAccount": "אין לך חשבון?",
+    "hasAccount": "יש לך כבר חשבון?",
+    "emailRequired": "נדרש דואר אלקטרוני",
+    "emailInvalid": "הזן כתובת דואר אלקטרוני תקינה",
+    "passwordRequired": "נדרשת סיסמה",
+    "passwordTooShort": "הסיסמה חייבת להכיל לפחות 8 תווים",
+    "nameRequired": "נדרש שם"
+  },
+  "map": {
+    "title": "מפה חיה",
+    "refresh": "רענן",
+    "offline": "אתה במצב לא מקוון — מציג נתונים מאוחסנים",
+    "free": "חופשי",
+    "moderate": "בינוני",
+    "congested": "עומס"
+  },
+  "report": {
+    "title": "דיווח על תקרית",
+    "locationLabel": "מיקום (קו רוחב, קו אורך)",
+    "typeLabel": "סוג התקרית",
+    "accident": "תאונה",
+    "pothole": "בור",
+    "blockage": "חסימה",
+    "description": "תיאור (אופציונלי)",
+    "photo": "הוסף תמונה",
+    "submit": "שלח דיווח",
+    "locationRequired": "נדרש מיקום",
+    "typeRequired": "נדרש סוג תקרית",
+    "success": "הדיווח נשלח בהצלחה",
+    "queued": "הדיווח בתור (יישלח בעת חיבור)"
+  },
+  "route": {
+    "title": "מסלול מומלץ",
+    "origin": "מ",
+    "destination": "אל",
+    "find": "מצא מסלול",
+    "distance": "מרחק",
+    "duration": "משך",
+    "km": "ק\"מ",
+    "min": "דקות",
+    "originRequired": "נדרשת נקודת מוצא",
+    "destinationRequired": "נדרשת נקודת יעד"
+  },
+  "settings": {
+    "title": "הגדרות",
+    "language": "שפה",
+    "account": "חשבון",
+    "email": "דואר אלקטרוני",
+    "name": "שם",
+    "version": "גרסה"
+  },
+  "tabs": {
+    "map": "מפה",
+    "report": "דיווח",
+    "route": "מסלול",
+    "settings": "הגדרות"
+  }
+}

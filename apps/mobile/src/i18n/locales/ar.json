@@ -1,0 +1,79 @@
+{
+  "common": {
+    "appName": "مرور المدينة الذكية",
+    "loading": "جار التحميل...",
+    "error": "حدث خطأ ما",
+    "retry": "أعد المحاولة",
+    "language": "اللغة",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "submit": "إرسال",
+    "back": "رجوع"
+  },
+  "auth": {
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "name": "الاسم الكامل",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "logout": "تسجيل الخروج",
+    "loginTitle": "مرحباً بعودتك",
+    "registerTitle": "إنشاء حساب جديد",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "emailInvalid": "أدخل عنوان بريد إلكتروني صحيح",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "passwordTooShort": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+    "nameRequired": "الاسم مطلوب"
+  },
+  "map": {
+    "title": "الخريطة المباشرة",
+    "refresh": "تحديث",
+    "offline": "أنت غير متصل — عرض البيانات المحفوظة",
+    "free": "خالٍ",
+    "moderate": "متوسط",
+    "congested": "مزدحم"
+  },
+  "report": {
+    "title": "الإبلاغ عن حادثة",
+    "locationLabel": "الموقع (خط العرض، خط الطول)",
+    "typeLabel": "نوع الحادثة",
+    "accident": "حادث",
+    "pothole": "حفرة",
+    "blockage": "انسداد",
+    "description": "الوصف (اختياري)",
+    "photo": "إضافة صورة",
+    "submit": "إرسال التقرير",
+    "locationRequired": "الموقع مطلوب",
+    "typeRequired": "نوع الحادثة مطلوب",
+    "success": "تم إرسال التقرير بنجاح",
+    "queued": "تم تأجيل التقرير (سيُرسل عند الاتصال)"
+  },
+  "route": {
+    "title": "أفضل مسار",
+    "origin": "من",
+    "destination": "إلى",
+    "find": "ابحث عن مسار",
+    "distance": "المسافة",
+    "duration": "المدة",
+    "km": "كم",
+    "min": "دقيقة",
+    "originRequired": "نقطة الانطلاق مطلوبة",
+    "destinationRequired": "الوجهة مطلوبة"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "account": "الحساب",
+    "email": "البريد الإلكتروني",
+    "name": "الاسم",
+    "version": "الإصدار"
+  },
+  "tabs": {
+    "map": "الخريطة",
+    "report": "إبلاغ",
+    "route": "المسار",
+    "settings": "الإعدادات"
+  }
+}

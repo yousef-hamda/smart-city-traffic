@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import "./globals.css";
+import TopNav from "@/src/components/TopNav";
 
 export const metadata: Metadata = {
   title: "Smart City Traffic — Developer Portal",
@@ -9,17 +11,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          fontFamily: "system-ui, sans-serif",
-          background: "#0b1120",
-          color: "#e2e8f0",
-          minHeight: "100vh",
-        }}
-      >
-        {children}
+    <html lang="en" className="dark">
+      <body className="min-h-screen bg-slate-950 text-slate-100">
+        <TopNav />
+        <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">{children}</main>
       </body>
     </html>
   );

@@ -1,0 +1,79 @@
+{
+  "common": {
+    "appName": "Smart City Traffic",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "language": "Language",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "back": "Back"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "login": "Log In",
+    "register": "Register",
+    "logout": "Log Out",
+    "loginTitle": "Welcome Back",
+    "registerTitle": "Create Account",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "nameRequired": "Name is required"
+  },
+  "map": {
+    "title": "Live Map",
+    "refresh": "Refresh",
+    "offline": "You are offline — showing cached data",
+    "free": "Free",
+    "moderate": "Moderate",
+    "congested": "Congested"
+  },
+  "report": {
+    "title": "Report Incident",
+    "locationLabel": "Location (lat, lng)",
+    "typeLabel": "Incident Type",
+    "accident": "Accident",
+    "pothole": "Pothole",
+    "blockage": "Blockage",
+    "description": "Description (optional)",
+    "photo": "Add Photo",
+    "submit": "Submit Report",
+    "locationRequired": "Location is required",
+    "typeRequired": "Incident type is required",
+    "success": "Report submitted successfully",
+    "queued": "Report queued (will send when online)"
+  },
+  "route": {
+    "title": "Best Route",
+    "origin": "From",
+    "destination": "To",
+    "find": "Find Route",
+    "distance": "Distance",
+    "duration": "Duration",
+    "km": "km",
+    "min": "min",
+    "originRequired": "Origin is required",
+    "destinationRequired": "Destination is required"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "account": "Account",
+    "email": "Email",
+    "name": "Name",
+    "version": "Version"
+  },
+  "tabs": {
+    "map": "Map",
+    "report": "Report",
+    "route": "Route",
+    "settings": "Settings"
+  }
+}
