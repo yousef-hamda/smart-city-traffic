@@ -1,42 +1,64 @@
-# @smart-city/realtime-gateway
+# Realtime Gateway
 
-WebSocket fan-out gateway for the Smart City Traffic Optimization Platform,
-built on plain Node + Express + Socket.IO.
+WebSocket fan-out for the dashboard and mobile app. Consumes the platform's
+Kafka topics and pushes live updates to subscribed browser clients over
+JWT-authenticated Socket.IO, with an optional Redis adapter for horizontal
+scaling.
 
-Phase 1 ships a skeleton: a `/health` endpoint, a Socket.IO server that
-accepts connections and immediately disconnects them, and conditional
-OpenTelemetry tracing. Subscription channels (road segments, incidents,
-predictions, alerts) backed by Kafka and a Redis Socket.IO adapter land in
-**Phase 10**.
+## Flow
 
-## Endpoints
+```
+Kafka (traffic.aggregates · traffic.events · vision.events · predictions · alerts)
+        │  TrafficConsumer
+        ▼
+  RealtimeGateway.dispatch()  ──route──►  io.to(room).emit(event, payload)
+        ▲                                          │
+   subscribe / unsubscribe                         ▼
+   (JWT-authed Socket.IO)                    browser / mobile
+```
 
-| Method | Path      | Description                                                              |
-| ------ | --------- | ------------------------------------------------------------------------ |
-| GET    | `/health` | `{ "status": "ok", "service": "realtime-gateway", "version": "0.1.0" }` |
-| WS     | `/socket.io` | Accepts handshake, then disconnects (channels in Phase 10)            |
+## Channels (rooms)
 
-## Environment variables
+| Room                | Joined via                                 | Events                                                                    |
+| ------------------- | ------------------------------------------ | ------------------------------------------------------------------------- |
+| `road-segment:<id>` | `subscribe { segments: [...] }`            | `segment:update`, `segment:vision`, `segment:prediction`, `segment:alert` |
+| `alerts`            | `subscribe { channels: ['alerts'] }`       | `alert`                                                                   |
+| `global-stats`      | `subscribe { channels: ['global-stats'] }` | `global-stats` (volatile, every 5s)                                       |
 
-| Variable                      | Default | Description                                     |
-| ----------------------------- | ------- | ----------------------------------------------- |
-| `PORT`                        | `8088`  | HTTP/WebSocket listen port                      |
-| `KAFKA_BOOTSTRAP_SERVERS`     | —       | Kafka brokers (Phase 10)                        |
-| `REDIS_URL`                   | —       | Redis for the Socket.IO adapter (Phase 10)      |
-| `JWT_ACCESS_SECRET`           | —       | Handshake auth secret (Phase 10)                |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | unset   | OTLP gRPC endpoint; tracing disabled when unset |
+## Auth
 
-Copy `.env.example` to `.env` for local development.
+Clients pass the API gateway's **access token** in the Socket.IO handshake
+(`auth.token`); the gateway verifies it with the shared `JWT_ACCESS_SECRET`,
+so identity is shared without a per-connection network call. Unauthorized
+sockets are rejected at handshake (`connect_error`).
+
+## Reliability
+
+- **Heartbeat** — Socket.IO ping every 25s, drop after 20s silence.
+- **Backpressure** — `global-stats` are emitted _volatile_ (dropped for slow
+  clients instead of buffered); segment subscriptions are capped per socket.
+- **Kafka resilience** — a broker outage at boot is logged and retried; the
+  gateway keeps serving sockets (no live data until the broker returns).
+- **Scale-out** — with `REDIS_URL` set, the `@socket.io/redis-adapter`
+  publishes room emissions over Redis pub/sub so any replica can reach any
+  client.
+
+## Environment
+
+| Variable                   | Default                 | Purpose                            |
+| -------------------------- | ----------------------- | ---------------------------------- |
+| `PORT`                     | `8088`                  | HTTP/WebSocket port                |
+| `KAFKA_BOOTSTRAP_SERVERS`  | `localhost:29092`       | topics to fan out                  |
+| `KAFKA_CONSUMER_GROUP`     | `realtime-gateway`      | consumer group                     |
+| `REDIS_URL`                | _unset_                 | Socket.IO Redis adapter (optional) |
+| `JWT_ACCESS_SECRET`        | —                       | must match the API gateway         |
+| `CORS_ORIGIN`              | `http://localhost:3000` | allowed browser origin             |
+| `GLOBAL_STATS_INTERVAL_MS` | `5000`                  | global-stats cadence               |
 
 ## Development
 
 ```bash
-pnpm --filter @smart-city/realtime-gateway dev        # ts-node-dev watch mode
-pnpm --filter @smart-city/realtime-gateway build      # tsc -> dist/
-pnpm --filter @smart-city/realtime-gateway test       # jest + supertest
-pnpm --filter @smart-city/realtime-gateway lint
+pnpm --filter @smart-city/realtime-gateway dev
+pnpm --filter @smart-city/realtime-gateway test       # routing, auth, integration
 pnpm --filter @smart-city/realtime-gateway typecheck
 ```
-
-The Express app is exported from `src/app.ts` separately from the listening
-server (`src/server.ts`) so tests can hit `/health` without binding a port.
