@@ -1,0 +1,22 @@
+# Maestro E2E flow for the mobile app: log in and submit an incident report.
+# Run on a simulator/device: maestro test .maestro/incident-report.yaml
+appId: city.smart.traffic
+---
+- launchApp
+- assertVisible: "Smart City Traffic"
+# Login
+- tapOn: "Email"
+- inputText: "citizen@example.com"
+- tapOn: "Password"
+- inputText: "password123"
+- tapOn: "Log in"
+# Go to the Report tab
+- tapOn:
+    id: "tab-report"
+- assertVisible: "Report an incident"
+# Choose a type and submit
+- tapOn: "Accident"
+- tapOn: "Description"
+- inputText: "Stalled vehicle blocking the right lane"
+- tapOn: "Submit report"
+- assertVisible: "Report submitted"

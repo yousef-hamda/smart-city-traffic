@@ -33,6 +33,15 @@ test: ## Run every service's test suite
 	done
 	cd apps/sensor-ingestion && ./mvnw -q test
 
+test-contract: ## Run Pact consumer contract tests
+	pnpm --filter @smart-city/contract-tests test
+
+test-e2e: ## Run Playwright E2E journeys (frontend)
+	pnpm --filter @smart-city/frontend test:e2e
+
+test-load: ## Run k6 API load test (set INGESTION/API URLs as needed)
+	k6 run scripts/load/api.js
+
 lint: ## Lint + typecheck all workspaces
 	pnpm -r --if-present lint
 	pnpm -r --if-present typecheck

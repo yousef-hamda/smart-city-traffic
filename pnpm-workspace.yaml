@@ -5,3 +5,4 @@ packages:
   - "apps/api-gateway"
   - "apps/realtime-gateway"
   - "packages/*"
+  - "tests/contract"
