@@ -1,0 +1,23 @@
+# Litmus chaos: CPU stress the realtime gateway. Expected: backpressure kicks
+# in (volatile stats dropped), heartbeats keep healthy clients, HPA scales out.
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: cpu-stress-realtime-gateway
+  namespace: smart-city
+spec:
+  appinfo:
+    appns: smart-city
+    applabel: "app.kubernetes.io/name=realtime-gateway"
+    appkind: deployment
+  engineState: active
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-cpu-hog
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "120"
+            - name: CPU_CORES
+              value: "1"

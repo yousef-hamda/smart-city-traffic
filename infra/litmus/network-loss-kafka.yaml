@@ -1,0 +1,26 @@
+# Litmus chaos: inject network loss between producers and Kafka. Expected: the
+# ingestion service's Resilience4j circuit breaker opens and readings are still
+# persisted (degraded to "persisted, not yet streamed"), not dropped.
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: network-loss-kafka
+  namespace: smart-city
+spec:
+  appinfo:
+    appns: smart-city
+    applabel: "app.kubernetes.io/name=sensor-ingestion"
+    appkind: deployment
+  engineState: active
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-network-loss
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "120"
+            - name: NETWORK_PACKET_LOSS_PERCENTAGE
+              value: "100"
+            - name: DESTINATION_HOSTS
+              value: "kafka"

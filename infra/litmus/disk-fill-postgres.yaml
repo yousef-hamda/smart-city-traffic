@@ -1,0 +1,24 @@
+# Litmus chaos: fill disk on the Postgres node. Expected: alerts fire,
+# ingestion writes start failing gracefully, and the game-day runbook's
+# disk-pressure procedure is exercised.
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: disk-fill-postgres
+  namespace: smart-city
+spec:
+  appinfo:
+    appns: smart-city
+    applabel: "app.kubernetes.io/name=postgres"
+    appkind: statefulset
+  engineState: active
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: disk-fill
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "90"
+            - name: FILL_PERCENTAGE
+              value: "80"

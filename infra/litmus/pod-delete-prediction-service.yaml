@@ -1,0 +1,40 @@
+# Litmus chaos: kill ml-prediction pods to verify the canary/replicas and
+# Istio retries keep predictions flowing. Expected: brief blip, no sustained
+# error-budget burn; the Rollout/Deployment reschedules pods.
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: pod-delete-ml-prediction
+  namespace: smart-city
+spec:
+  appinfo:
+    appns: smart-city
+    applabel: "app.kubernetes.io/name=ml-prediction"
+    appkind: deployment
+  engineState: active
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-delete
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+            - name: CHAOS_INTERVAL
+              value: "10"
+            - name: FORCE
+              value: "false"
+        probe:
+          - name: predictions-still-served
+            type: httpProbe
+            mode: Continuous
+            httpProbe/inputs:
+              url: http://ml-prediction.smart-city:8083/health
+              method:
+                get:
+                  criteria: ==
+                  responseCode: "200"
+            runProperties:
+              probeTimeout: 2s
+              interval: 2s
+              retry: 3
